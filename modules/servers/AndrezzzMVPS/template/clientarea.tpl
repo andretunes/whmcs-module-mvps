@@ -948,6 +948,9 @@
                         <label class="form-label d-inline-block">Uptime:</label>
                         <span class="form-label dashboard-value d-inline-block mr-2">{$serverInfo['uptime_text']}</span>
                         <br />
+                        <label class="form-label d-inline-block">IPv4:</label>
+                        <span class="form-label dashboard-value d-inline-block mr-2">{$serverInfo['ips'][0]}</span>
+                        <br />
                         <label class="form-label d-inline-block">IPv6:</label>
                         <span class="form-label dashboard-value d-inline-block mr-2">{if $serverInfo['ipv6'] !== ''}{$serverInfo['ipv6']}{else}<a onclick="AndrezzzMVPS_API('IPv6');">Create</a>{/if}</span>
                     </div>
