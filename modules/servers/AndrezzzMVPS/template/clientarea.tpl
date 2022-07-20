@@ -905,7 +905,7 @@
         <div class="col-md-6 mb-3 text-center">
             <div class="border p-2">
                 <div class="mb-2">
-                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$serverInfo['operatingSystem']['groupimg']}.png" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
+                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$serverInfo['operatingSystem']['group_img']}.png" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
                 </div>
                 <div class="information">
                     <span class="form-label dashboard-value d-inline-block mb-2">{$serverInfo['operatingSystem']['name']}</span>
