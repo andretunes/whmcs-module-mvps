@@ -619,42 +619,24 @@ function AndrezzzMVPS_ClientArea(array $params) {
 
         $dirOS = __DIR__ . '/template/img/os/';
         $availableOS = glob($dirOS . '*.png');
-
-        $operatingSystemsGrouped = array(
-            'centos' => array(
-                'name' => 'CentOS',
-                'versions' => array(),
-            ),
-            'ubuntu' => array(
-                'name' => 'Ubuntu',
-                'versions' => array(),
-            ),
-            'debian' => array(
-                'name' => 'Debian',
-                'versions' => array(),
-            ),
-            'lubuntu' => array(
-                'name' => 'Lubuntu',
-                'versions' => array(),
-            ),
-            'mikrotik' => array(
-                'name' => 'Mikrotik',
-                'versions' => array(),
-            ),
-            'iso' => array(
-                'name' => 'ISO',
-                'versions' => array(),
-            ),
-        );
+        $operatingSystemsGrouped = array();
         
         foreach ($availableOS as $key => $os) {
             $availableOS[$key] = explode('.png', explode($dirOS, $os)[1])[0];
         }
 
-        foreach ($operatingSystems as $key => $operatingSystem) {
-            $operatingSystems[$key]['groupimg'] = (in_array($operatingSystem['group'], $availableOS) ? $operatingSystem['group'] : 'others');
-
-            if (isset($operatingSystemsGrouped[$operatingSystem['group']])) $operatingSystemsGrouped[$operatingSystem['group']]['versions'][] = $operatingSystem;
+        foreach ($operatingSystems as $operatingSystem) {
+            $group = $operatingSystem['group'];
+            
+            if (!isset($operatingSystemsGrouped[$group])) {
+                $operatingSystemsGrouped[$group] = array(
+                    'name' => $operatingSystem['group_name'],
+                    'versions' => array(),
+                );
+            }
+            
+            $operatingSystems[$key]['group_img'] = (in_array($group, $availableOS) ? $operatingSystem['group'] : 'others');
+            $operatingSystemsGrouped[$os['group']]['versions'][] = $os;
         }
         
         $serverInfo['operatingSystem'] = $serverInfo['os'];
