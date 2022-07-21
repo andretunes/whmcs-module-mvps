@@ -625,7 +625,7 @@ function AndrezzzMVPS_ClientArea(array $params) {
             $availableOS[$key] = explode('.png', explode($dirOS, $os)[1])[0];
         }
 
-        foreach ($operatingSystems as $operatingSystem) {
+        foreach ($operatingSystems as $key => $operatingSystem) {
             $group = $operatingSystem['group'];
             
             if (!isset($operatingSystemsGrouped[$group])) {
