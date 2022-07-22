@@ -1102,7 +1102,7 @@
                                         <div id="{$group}-os" class="col os_badge media dropdown show">
                                             <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <div class="media-left p-1 float-left">
-                                                    <img class="distro_img media-object" src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$group}.png">
+                                                    <img class="distro_img media-object" src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$operatingSystemsGroup['image']}.png">
                                                 </div>
                                                 <div class="media-body float-left text-left p-2">
                                                     <h4 class="distro_name media-heading">{$operatingSystemsGroup['name']}</h4>

@@ -631,18 +631,19 @@ function AndrezzzMVPS_ClientArea(array $params) {
             if (!isset($operatingSystemsGrouped[$group])) {
                 $operatingSystemsGrouped[$group] = array(
                     'name' => $operatingSystem['group_name'],
+                    'image' => (in_array($group, $availableOS) ? $group : 'others'),
                     'versions' => array(),
                 );
             }
             
-            $operatingSystems[$key]['group_img'] = (in_array($group, $availableOS) ? $operatingSystem['group'] : 'others');
-            $operatingSystemsGrouped[$os['group']]['versions'][] = $os;
+            $operatingSystemsGrouped[$group]['versions'][] = $operatingSystem;
         }
         
         $serverInfo['operatingSystem'] = $serverInfo['os'];
         $serverInfo['operatingSystem'] = array_search($serverInfo['operatingSystem'], array_column($operatingSystems, 'id'));
         $serverInfo['operatingSystem'] = $operatingSystems[$serverInfo['operatingSystem']];
-        
+        $serverInfo['operatingSystem']['group_img'] = (in_array($server['operatingSystem']['group'], $availableOS) ? $server['operatingSystem']['group'] : 'others');
+
         $serverInfo['status'] = $serverInfo['status'] !== 'ok' ? $serverInfo['status'] : $serverInfo['vm_status'];
         $serverInfo['statusDescription'] = $serverInfo['status'] !== 'ok' ? ucfirst($serverInfo['status']) : ucfirst($serverInfo['vm_status']);
 
@@ -656,7 +657,6 @@ function AndrezzzMVPS_ClientArea(array $params) {
             'vars' => array(
                 'serverInfo' => $serverInfo,
                 'locations' => $locations,
-                'operatingSystems' => $operatingSystems,
                 'operatingSystemsGrouped' => $operatingSystemsGrouped,
             ),
         );
