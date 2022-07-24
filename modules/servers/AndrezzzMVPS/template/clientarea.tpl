@@ -872,7 +872,7 @@
 		AndrezzzMVPS_updateStatitics();
     });
 
-	function AndrezzzMVPS_chooseOS(button) {
+	function AndrezzzMVPS_ChooseOS(button) {
 		var newOS = $_('newOS').value;
 
 		if (newOS !== '0') {
@@ -1098,7 +1098,7 @@
                                     <label class="form-label">Select OS:</label>
                                     
                                     <div id="os_list" class="row mb-4">
-                                        {foreach from=$operatingSystemsGrouped key=$group item=$operatingSystemsGroup}
+                                        {foreach from=$operatingSystems key=$group item=$operatingSystemsGroup}
                                         <div id="{$group}-os" class="col os_badge media dropdown show">
                                             <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <div class="media-left p-1 float-left">
@@ -1110,8 +1110,8 @@
                                                 </div>
                                             </button>
                                             <div class="os_badge_list dropdown-menu w-100" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 68px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                {foreach from=$operatingSystemsGrouped[$group]['versions'] item=$operatingSystem}
-                                                <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzMVPS_chooseOS(this);return false;">{$operatingSystem['name']}</a>
+                                                {foreach from=$operatingSystemsGroup['versions'] item=$operatingSystem}
+                                                <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzMVPS_ChooseOS(this);return false;">{$operatingSystem['name']}</a>
                                                 {/foreach}
                                             </div>
                                         </div>

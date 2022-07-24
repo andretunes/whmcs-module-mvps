@@ -601,7 +601,7 @@ function AndrezzzMVPS_ClientArea(array $params) {
         $locations = AndrezzzMVPS_API($params);
 
         $params['action'] = 'Operating Systems';
-        $operatingSystems = AndrezzzMVPS_API($params);
+        $operatingSystemsTemp = AndrezzzMVPS_API($params);
 
         $dirLocations = __DIR__ . '/template/img/flags/';
         $availableLocations = glob($dirLocations . '*.png');
@@ -619,30 +619,32 @@ function AndrezzzMVPS_ClientArea(array $params) {
 
         $dirOS = __DIR__ . '/template/img/os/';
         $availableOS = glob($dirOS . '*.png');
-        $operatingSystemsGrouped = array();
+        $operatingSystems = array();
         
         foreach ($availableOS as $key => $os) {
             $availableOS[$key] = explode('.png', explode($dirOS, $os)[1])[0];
         }
 
-        foreach ($operatingSystems as $key => $operatingSystem) {
+        foreach ($operatingSystemsTemp as $key => $operatingSystem) {
+            if ($operatingSystem['price'] !== '0.00') continue;
+
             $group = $operatingSystem['group'];
             
-            if (!isset($operatingSystemsGrouped[$group])) {
-                $operatingSystemsGrouped[$group] = array(
+            if (!isset($operatingSystems[$group])) {
+                $operatingSystems[$group] = array(
                     'name' => $operatingSystem['group_name'],
                     'image' => (in_array($group, $availableOS) ? $group : 'others'),
                     'versions' => array(),
                 );
             }
             
-            $operatingSystemsGrouped[$group]['versions'][] = $operatingSystem;
+            $operatingSystems[$group]['versions'][] = $operatingSystem;
         }
         
         $serverInfo['operatingSystem'] = $serverInfo['os'];
-        $serverInfo['operatingSystem'] = array_search($serverInfo['operatingSystem'], array_column($operatingSystems, 'id'));
-        $serverInfo['operatingSystem'] = $operatingSystems[$serverInfo['operatingSystem']];
-        $serverInfo['operatingSystem']['group_img'] = (in_array($server['operatingSystem']['group'], $availableOS) ? $server['operatingSystem']['group'] : 'others');
+        $serverInfo['operatingSystem'] = array_search($serverInfo['operatingSystem'], array_column($operatingSystemsTemp, 'id'));
+        $serverInfo['operatingSystem'] = $operatingSystemsTemp[$serverInfo['operatingSystem']];
+        $serverInfo['operatingSystem'] = $operatingSystems[$serverInfo['operatingSystem']['group']];
 
         $serverInfo['status'] = $serverInfo['status'] !== 'ok' ? $serverInfo['status'] : $serverInfo['vm_status'];
         $serverInfo['statusDescription'] = $serverInfo['status'] !== 'ok' ? ucfirst($serverInfo['status']) : ucfirst($serverInfo['vm_status']);
@@ -657,7 +659,7 @@ function AndrezzzMVPS_ClientArea(array $params) {
             'vars' => array(
                 'serverInfo' => $serverInfo,
                 'locations' => $locations,
-                'operatingSystemsGrouped' => $operatingSystemsGrouped,
+                'operatingSystems' => $operatingSystems,
             ),
         );
     } catch (Exception $err) {
