@@ -1,1 +1,0 @@
-<iframe src="{$vnc['vnc_url']}" scrolling="auto" height="100%" width="100%" frameborder="0" style="margin:-8px;"></iframe>
