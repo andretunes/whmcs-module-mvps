@@ -33,7 +33,7 @@
         display: none;
         z-index: 1000000;
     }
-
+    
     .AndrezzzVPS #loading-spinner {
         position: fixed;
         overflow: visible;
@@ -43,7 +43,7 @@
         bottom: 0;
         right: 0;
     }
-
+    
     .AndrezzzVPS #loading:before {
         content: '';
         display: block;
@@ -90,7 +90,7 @@
         align-items: center;
         justify-content: center;
     }
-
+    
     .AndrezzzVPS .mb-3,
     .AndrezzzVPS .my-3 {
         margin-bottom: 1rem!important;
@@ -854,7 +854,7 @@
 
             const serverInfoInitial = JSON.parse('{$serverInfo|@json_encode}');
 			clearTimeout(timerServerLoads);
-
+            
             if (timerServerLoads) {
                 WHMCS.http.jqClient.post('clientarea.php?action=productdetails&id={$serviceid}&modop=custom&a=ClientAreaAPI&api=Server%20Info',
                     function(serverInfo) {
@@ -1097,38 +1097,38 @@
                 </div>
 
                 <div class="panel">
-                        <div class="text-center">
-                            <ul class="nav nav-pills mb-3 d-inline-flex" id="graphs-tab" role="tablist">
-                                <li class="nav-item mx-2">
-                                    <a class="nav-link active" id="cpu-tab" data-toggle="pill" href="#cpu" role="tab" aria-controls="cpu" aria-selected="true">CPU</a>
-                                </li>
-                                <li class="nav-item mx-2">
-                                    <a class="nav-link" id="ram-tab" data-toggle="pill" href="#ram" role="tab" aria-controls="ram" aria-selected="false" style="display: block">RAM</a>
-                                </li>
-                                <li class="nav-item mx-2">
-                                    <a class="nav-link" id="disk-tab" data-toggle="pill" href="#disk" role="tab" aria-controls="disk" aria-selected="false" style="display: block">Disk</a>
-                                </li>
-                                <li class="nav-item mx-2">
-                                    <a class="nav-link" id="network-tab" data-toggle="pill" href="#network" role="tab" aria-controls="network" aria-selected="false" style="display: block">Network</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="cpu" role="tabpanel" aria-labelledby="cpu-tab">
+                    <div class="text-center">
+                        <ul class="nav nav-pills mb-3 d-inline-flex" id="graphs-tab" role="tablist">
+                            <li class="nav-item mx-2">
+                                <a class="nav-link active" id="cpu-tab" data-toggle="pill" href="#cpu" role="tab" aria-controls="cpu" aria-selected="true">CPU</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" id="ram-tab" data-toggle="pill" href="#ram" role="tab" aria-controls="ram" aria-selected="false" style="display: block">RAM</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" id="disk-tab" data-toggle="pill" href="#disk" role="tab" aria-controls="disk" aria-selected="false" style="display: block">Disk</a>
+                            </li>
+                            <li class="nav-item mx-2">
+                                <a class="nav-link" id="network-tab" data-toggle="pill" href="#network" role="tab" aria-controls="network" aria-selected="false" style="display: block">Network</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="cpu" role="tabpanel" aria-labelledby="cpu-tab">
                             <span id="cpu-graph"><img src="{$images['loading']}"/></span>
-                            </div>
-                            <div class="tab-pane fade" id="ram" role="tabpanel" aria-labelledby="ram-tab">
+                        </div>
+                        <div class="tab-pane fade" id="ram" role="tabpanel" aria-labelledby="ram-tab">
                             <span id="ram-graph"><img src="{$images['loading']}"/></span>
-                            </div>
-                            <div class="tab-pane fade" id="disk" role="tabpanel" aria-labelledby="disk-tab">
+                        </div>
+                        <div class="tab-pane fade" id="disk" role="tabpanel" aria-labelledby="disk-tab">
                             <span id="disk-graph"><img src="{$images['loading']}"/></span>
-                            </div>
-                            <div class="tab-pane fade" id="network" role="tabpanel" aria-labelledby="network-tab">
+                        </div>
+                        <div class="tab-pane fade" id="network" role="tabpanel" aria-labelledby="network-tab">
                             <span id="network-graph"><img src="{$images['loading']}"/></span>
-                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
             <div class="tab-pane fade" id="backups" role="tabpanel" aria-labelledby="backups-tab">
                 <div class="head">
                     <img src="{$images['cloud']}">
@@ -1221,7 +1221,7 @@
 
                                 <center>
                                 <div class="form-group">
-                                <label class="form-label d-inline-block">Password:</label>
+                                    <label class="form-label d-inline-block">Password:</label>
     
                                     <div class="input-group col-sm-6">
                                         <input class="form-control" id="vpsPassword" type="password" maxlength="128" disabled value="{if $serverInfo['root'] != ''}{$serverInfo['root']}{else}Expired{/if}">
@@ -1251,20 +1251,20 @@
                                         <div class="col-12 col-sm-6 mb-2">
                                             <div id="{$group}-os" class="os_badge media dropdown">
                                                 <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <div class="media-left p-1 float-left">
+                                                    <div class="media-left p-1 float-left">
                                                         <img class="distro_img media-object" src="{$operatingSystemsGroup['image']}">
-                                                </div>
+                                                    </div>
 
-                                                <div class="media-body float-left text-left p-2">
-                                                    <h4 class="distro_name media-heading">{$operatingSystemsGroup['name']}</h4>
-                                                    <span id="{$group}-version" class="version">SELECT VERSION</span>
-                                                </div>
-                                            </button>
+                                                    <div class="media-body float-left text-left p-2">
+                                                        <h4 class="distro_name media-heading">{$operatingSystemsGroup['name']}</h4>
+                                                        <span id="{$group}-version" class="version">SELECT VERSION</span>
+                                                    </div>
+                                                </button>
 
                                                 <div class="os_badge_list dropdown-menu w-100">
-                                                {foreach from=$operatingSystemsGroup['versions'] item=$operatingSystem}
+                                                    {foreach from=$operatingSystemsGroup['versions'] item=$operatingSystem}
                                                     <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzVPS_ChooseOS(this);return false;">{$operatingSystem['name']}</a>
-                                                {/foreach}
+                                                    {/foreach}
                                                 </div>
                                             </div>
                                         </div>

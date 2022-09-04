@@ -324,49 +324,49 @@ function AndrezzzMVPS_ConfigOptions() {
                 $id = (int) $_POST['id'];
                 $serverGroup = (int) $_POST['servergroup'];
             } else {
-        $id = (int) $_REQUEST['id'];
-
-        $product = Capsule::table('tblproducts')->where('id', $id)->first();
+                $id = (int) $_REQUEST['id'];
+        
+                $product = Capsule::table('tblproducts')->where('id', $id)->first();
                 $serverGroup = (int) $product->servergroup;
             }
             
             $serverGroup = Capsule::table('tblservergroupsrel')->where('groupid', $serverGroup)->first();
             if (!$serverGroup) throw new Exception('No server group specified.');
-        
+
             $server = Capsule::table('tblservers')->where('id', $serverGroup->serverid)->first();
             if (!$server) throw new Exception('No server found in the server group.');
-    
-        $params = array(
-            'serverusername' => $server->username,
-            'serverpassword' => decrypt($server->password),
-        );
-    
-        $params['action'] = 'Operating Systems';
-        $operatingSystems = AndrezzzMVPS_API($params);
-
-        foreach ($operatingSystems as $operatingSystem) {
-                $array['osid']['Options'] += array(
-                $operatingSystem['id'] => $operatingSystem['name'] . ' (€' . $operatingSystem['price'] . ' EUR)'
+        
+            $params = array(
+                'serverusername' => $server->username,
+                'serverpassword' => decrypt($server->password),
             );
-        }
+        
+            $params['action'] = 'Operating Systems';
+            $operatingSystems = AndrezzzMVPS_API($params);
+        
+            foreach ($operatingSystems as $operatingSystem) {
+                $array['osid']['Options'] += array(
+                    $operatingSystem['id'] => $operatingSystem['name'] . ' (€' . $operatingSystem['price'] . ' EUR)'
+                );
+            }
     
             $params['action'] = 'Packages';
             $packageslist = AndrezzzMVPS_API($params);
         
-        foreach ($packageslist as $package) {
+            foreach ($packageslist as $package) {
                 $array['packageid']['Options'] += array(
-                $package['id'] => $package['name'] . ' (€' . $package['price'] . ' EUR)'
-            );
-        }
+                    $package['id'] => $package['name'] . ' (€' . $package['price'] . ' EUR)'
+                );
+            }
     
             $params['action'] = 'Locations';
             $locationslist = AndrezzzMVPS_API($params);
         
-        foreach ($locationslist as $location) {
+            foreach ($locationslist as $location) {
                 $array['locationid']['Options'] += array(
-                $location['id'] => $location['name']
-            );
-        }
+                    $location['id'] => $location['name']
+                );
+            }
         }
     } catch(Exception $err) {
         AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
@@ -681,7 +681,7 @@ function AndrezzzMVPS_ClientArea(array $params) {
                 $serverInfo['location']['image'] = 'data:image/png;base64,' . base64_encode(file_get_contents($location));
             }
         }
-
+        
         if (!isset($serverInfo['location']['image'])) {
             $serverInfo['location']['image'] = 'data:image/png;base64,' . base64_encode(file_get_contents($dirLocations . 'no-flag.png'));
         }
