@@ -565,6 +565,42 @@ function AndrezzzMVPS_ClientAreaAPI(array $params) {
     }
 }
 
+function AndrezzzMVPS_DeliverFile(array $params) {
+    try {
+        $dir = __DIR__ . '/template/';
+        $file = App::getFromRequest('file');
+        $files = array('app.min.css', 'app.min.js');
+
+        if (in_array($file, $files)) {
+            $type = '';
+
+			if (function_exists('ob_gzhandler')) {
+				ob_start('ob_gzhandler');
+			}
+            
+            if (strpos($file, '.js') !== false) {
+                $dir .= 'js/';
+                $type = 'application/javascript';
+            } else if (strpos($file, '.css') !== false) {
+                $dir .= 'css/';
+                $type = 'text/css';
+            } else {
+                $type = 'text/html';
+            }
+
+            header('Content-Type: ' . $type . '; charset=utf-8');
+            header('Cache-Control: max-age=604800, public');
+            
+            echo file_get_contents($dir . $file);
+            WHMCS\Terminus::getInstance()->doExit();
+        } else {
+            throw new Exception('File not found');
+        }
+    } catch(Exception $err) {
+        AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
+        return array('jsonResponse' => array('result' => 'error', 'message' => $err->getMessage()));
+    }
+}
 function AndrezzzMVPS_AdminCustomButtonArray() {
     return array(
         'Start' => 'Start',
@@ -584,7 +620,7 @@ function AndrezzzMVPS_ClientAreaCustomButtonArray() {
 }
 
 function AndrezzzMVPS_ClientAreaAllowedFunctions() {
-    return array('ClientAreaAPI');
+    return array('ClientAreaAPI', 'DeliverFile');
 }
 
 function AndrezzzMVPS_ClientArea(array $params) {
@@ -603,19 +639,29 @@ function AndrezzzMVPS_ClientArea(array $params) {
         $params['action'] = 'Operating Systems';
         $operatingSystemsTemp = AndrezzzMVPS_API($params);
 
+        $dirImages = __DIR__ . '/template/img/';
+        $availableImages = glob($dirImages . '*.png');
+        $images = array();
+        
+        foreach ($availableImages as $key => $image) {
+            $images[explode('.png', explode($dirImages, $image)[1])[0]] = 'data:image/png;base64,' . base64_encode(file_get_contents($image));
+        }
+
         $dirLocations = __DIR__ . '/template/img/flags/';
         $availableLocations = glob($dirLocations . '*.png');
         
-        foreach ($availableLocations as $key => $location) {
-            $availableLocations[$key] = explode('.png', explode($dirLocations, $location)[1])[0];
-        }
-
-        foreach ($locations as $key => $location) {
-            $locations[$key]['img'] = (in_array($location['id'], $availableLocations) ? $location['id'] : 'no-flag');
-        }
-        
         $serverInfo['location'] = array_search($serverInfo['location'], array_column($locations, 'id'));
         $serverInfo['location'] = $locations[$serverInfo['location']];
+
+        foreach ($availableLocations as $key => $location) {
+            if ($serverInfo['location']['id'] === explode('.png', explode($dirLocations, $location)[1])[0]) {
+                $serverInfo['location']['image'] = 'data:image/png;base64,' . base64_encode(file_get_contents($location));
+            }
+        }
+
+        if (!isset($serverInfo['location']['image'])) {
+            $serverInfo['location']['image'] = 'data:image/png;base64,' . base64_encode(file_get_contents($dirLocations . 'no-flag.png'));
+        }
 
         $dirOS = __DIR__ . '/template/img/os/';
         $availableOS = glob($dirOS . '*.png');
@@ -631,9 +677,11 @@ function AndrezzzMVPS_ClientArea(array $params) {
             $group = $operatingSystem['group'];
             
             if (!isset($operatingSystems[$group])) {
+                $image = file_get_contents($dirOS . (in_array($group, $availableOS) ? $group : 'others') . '.png');
+                
                 $operatingSystems[$group] = array(
                     'name' => $operatingSystem['group_name'],
-                    'image' => (in_array($group, $availableOS) ? $group : 'others'),
+                    'image' => 'data:image/png;base64,' . base64_encode($image),
                     'versions' => array(),
                 );
             }
@@ -647,7 +695,8 @@ function AndrezzzMVPS_ClientArea(array $params) {
         $serverInfo['operatingSystem'] = $operatingSystems[$serverInfo['operatingSystem']['group']];
 
         $serverInfo['status'] = $serverInfo['status'] !== 'ok' ? $serverInfo['status'] : $serverInfo['vm_status'];
-        $serverInfo['statusDescription'] = $serverInfo['status'] !== 'ok' ? ucfirst($serverInfo['status']) : ucfirst($serverInfo['vm_status']);
+        $serverInfo['statusImage'] = $images[$serverInfo['status']];
+        $serverInfo['statusDescription'] = ucfirst($serverInfo['status']);
 
         $serverInfo['package'] = array_search($serverInfo['package'], array_column($packages, 'id'));
         $serverInfo['package'] = $packages[$serverInfo['package']];
@@ -657,8 +706,9 @@ function AndrezzzMVPS_ClientArea(array $params) {
         return array(
             'templatefile' => 'template/clientarea',
             'vars' => array(
-                'serverInfo' => $serverInfo,
+                'images' => $images,
                 'locations' => $locations,
+                'serverInfo' => $serverInfo,
                 'operatingSystems' => $operatingSystems,
             ),
         );
@@ -669,6 +719,7 @@ function AndrezzzMVPS_ClientArea(array $params) {
             'templatefile' => 'template/error',
             'templateVariables' => array(
                 'error' => $err->getMessage(),
+                'image' => 'data:image/png;base64,' . base64_encode(file_get_contents(__DIR__ . '/template/img/notice.png'))
             ),
         );
     }
