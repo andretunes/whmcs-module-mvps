@@ -606,12 +606,12 @@
                             const firewallTable = $_('firewallTable').getElementsByTagName('tbody')[0];
                             
                             delete data.result;
-                            $('#firewallTable tbody').find('tr:not(:first)').remove();
+                            $('#firewallTable tbody').find('tr:not(:last)').remove();
 
                             for (let i = 0; i < Object.keys(data).length; i++) {
                                 const rule = data[Object.keys(data)[i]];
                                 
-                                const row = firewallTable.insertRow();
+                                const row = firewallTable.insertRow(1);
                                 const action = row.insertCell(0);
                                 const port = row.insertCell(1);
                                 const protocol = row.insertCell(2);
@@ -626,6 +626,8 @@
                                 note.innerHTML = rule.note;
                                 actions.innerHTML = '<a href="#" onclick="AndrezzzVPS_API(\'Delete Firewall rule\', true, { rule_id: ' + rule.id + ' });return false;"><i class="fas fa-1x fa-times delete" aria-hidden="true"></i></a>';
                             }
+
+                            $('#firewallTable tbody').append($('#firewallTable tbody tr:first'));
 
                             break;
 
