@@ -833,6 +833,8 @@
         AndrezzzVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
 
 		function AndrezzzVPS_UpdateStatitics() {
+            if ($_('overview-tab').ariaSelected !== 'true') return timerServerLoads = setTimeout(AndrezzzVPS_UpdateStatitics, 10000);
+
             const serverInfoInitial = JSON.parse('{$serverInfo|@json_encode}');
 			clearTimeout(timerServerLoads);
 
@@ -1110,6 +1112,72 @@
                         </div>
                     </div>
                 </div>
+            <div class="tab-pane fade" id="backups" role="tabpanel" aria-labelledby="backups-tab">
+                <div class="head">
+                    <img src="{$images['cloud']}">
+                    <span class="h3">Backups</span>
+                </div>
+
+                <div class="panel">
+                    <div class="grey-txt mb-3">The dates for which backups of this VPS are available are listed below. You can restore or delete them accordingly.</div>
+
+                    <div class="table-responsive">
+                        <table id="backupTable" cellpadding="0" cellspacing="0" border="0" class="table table-hover tablesorter" width="100%">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Size</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th width="50">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <button onclick="AndrezzzVPS_API('Create backup');return false;" class="submit-btn">Backup Now</button>
+
+                    <br/>
+                    <br/>
+                    
+                    <div class="grey-txt mb-3">
+                        * Please keep in mind that the new backups will replace the older ones.<br/>
+                        ** The automated backups will also replace your manual backups unless the automated backups are disabled.<br/>
+                        *** The automated backups are made 2 times a week and are part of our disaster recovery plan. If you disable the automated backups, you also disable any chance of recovery in case of a disaster.<br/>
+                        **** The backup's file system might not be fully consistent if the VPS was writing to the filesystem at the moment of the backup. For fully consistent backups, the server must be stopped while the backup is being created.
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="rdns" role="tabpanel" aria-labelledby="rdns-tab">
+                <div class="head">
+                    <img src="{$images['search']}">
+                    <span class="h3">rDNS Records</span>
+                </div>
+
+                <div id="vpsrdns_div">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="rdnsIP" class="form-label mr-1 d-inline-block">IP Address</label>
+                                <select class="form-control" name="rdnsIP" id="rdnsIP">
+                                    {foreach from=$serverInfo['ips'] item=$ip}
+                                    <option value="{$ip}">{$ip}</option>
+                                    {/foreach}
+                                    {if $serverInfo['ipv6'] !== ''}<option value="{$serverInfo['ipv6']}">{$serverInfo['ipv6']}</option>{/if}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="rdnsDomain" class="form-label mr-1 d-inline-block">Domain name</label>
+                                <input class="form-control" type="text" name="rdnsDomain" size="30" id="rdnsDomain"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="AndrezzzVPS_API('Reverse DNS', true, { ip: $_('rdnsIP').value, val: $_('rdnsDomain').value });" class="submit-btn">Add Reverse DNS</button>
+                </div>
             </div>
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <div class="row vertical-tabs">
@@ -1128,7 +1196,9 @@
                                     <span class="h3">Password</span>
                                 </div>
 
-                                <div class="badge badge-warning mb-3">The installation password is removed from our systems after 72 hours. It is mandatory for you to change the password on your first login!</div>
+                                <span class="badge badge-warning mb-3">
+                                    The installation password is removed from our systems after 72 hours.<br />It is mandatory for you to change the password on your first login!
+                                </span>
                                 
                                 <br/>
 
@@ -1154,7 +1224,7 @@
                                     <span class="h3">Reinstall</span>
                                 </div>
 
-                                <div class="badge badge-danger mb-3">Please understand that by reinstalling, all the data will be wiped from the server.</div>
+                                <span class="badge badge-danger mb-3">Please understand that by reinstalling, all the data will be wiped from the server.</span>
 
                                 <div id="reinstallIntructions" class="col-12 mx-auto">
                                     <label class="form-label">Select OS:</label>
@@ -1194,7 +1264,7 @@
                                     <span class="h3">Firewall</span>
                                 </div>
 
-                                <div class="gray-txt mb-3">The rules are evaluated from the top to the bottom. By default, everything is allowed. The firewall is only available on the public interface. Only the inbound traffic will be filtered by the firewall.</div>
+                                <div class="grey-txt mb-3">The rules are evaluated from the top to the bottom. By default, everything is allowed. The firewall is only available on the public interface. Only the inbound traffic will be filtered by the firewall.</div>
 
                                 <div class="table-responsive">
                                     <table id="firewallTable" cellpadding="0" cellspacing="0" border="0" class="table table-hover tablesorter" width="100%">
@@ -1247,8 +1317,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <button onclick="AndrezzzMVPS_API('Reverse DNS', true, { ip: $_('rdnsIP').value, val: $_('rdnsDomain').value });" class="submit-btn">Add Reverse DNS</button>
                 </div>
             </div>
         </div>
