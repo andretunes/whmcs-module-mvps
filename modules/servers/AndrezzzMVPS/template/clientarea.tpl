@@ -872,7 +872,7 @@
 		AndrezzzMVPS_updateStatitics();
     });
 
-	function AndrezzzMVPS_chooseOS(button) {
+	function AndrezzzMVPS_ChooseOS(button) {
 		var newOS = $_('newOS').value;
 
 		if (newOS !== '0') {
@@ -905,7 +905,7 @@
         <div class="col-md-6 mb-3 text-center">
             <div class="border p-2">
                 <div class="mb-2">
-                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$serverInfo['operatingSystem']['group_img']}.png" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
+                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$serverInfo['operatingSystem']['image']}.png" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
                 </div>
                 <div class="information">
                     <span class="form-label dashboard-value d-inline-block mb-2">{$serverInfo['operatingSystem']['name']}</span>
@@ -1098,7 +1098,7 @@
                                     <label class="form-label">Select OS:</label>
                                     
                                     <div id="os_list" class="row mb-4">
-                                        {foreach from=$operatingSystemsGrouped key=$group item=$operatingSystemsGroup}
+                                        {foreach from=$operatingSystems key=$group item=$operatingSystemsGroup}
                                         <div id="{$group}-os" class="col os_badge media dropdown show">
                                             <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                 <div class="media-left p-1 float-left">
@@ -1110,8 +1110,8 @@
                                                 </div>
                                             </button>
                                             <div class="os_badge_list dropdown-menu w-100" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 68px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                                {foreach from=$operatingSystemsGrouped[$group]['versions'] item=$operatingSystem}
-                                                <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzMVPS_chooseOS(this);return false;">{$operatingSystem['name']}</a>
+                                                {foreach from=$operatingSystemsGroup['versions'] item=$operatingSystem}
+                                                <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzMVPS_ChooseOS(this);return false;">{$operatingSystem['name']}</a>
                                                 {/foreach}
                                             </div>
                                         </div>
