@@ -54,3 +54,5 @@ Capsule::table('tblhosting')->where('id', $service->id)->update(array(
     'dedicatedip' => $_POST['ips'][0],
     'assignedips' => !array_shift($_POST['ips']) ?: implode('\n', $_POST['ips']),
 ));
+
+echo '*ok*';
