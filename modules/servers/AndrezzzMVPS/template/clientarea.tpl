@@ -1,28 +1,41 @@
-<script src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/js/jquery.flot.min.js"></script>
-<script src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/js/jquery.flot.pie.min.js"></script>
-<script src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/js/jquery.flot.time.min.js"></script>
-<script src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/js/jquery.flot.stack.min.js"></script>
-<script src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/js/jquery.flot.tooltip.min.js"></script>
+{**
+ *	MVPS WHMCS Server Provisioning version 1.0
+ *
+ *	@package     WHMCS
+ *	@copyright   Andrezzz
+ *	@link        https://www.andrezzz.pt
+ *	@author      André Antunes <andreantunes@andrezzz.pt>
+ *}
 
+<script src="{$WEB_ROOT}/clientarea.php?action=productdetails&id={$serviceid}&modop=custom&a=DeliverFile&file=bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-bootstrap-scrolling-tabs@2.6.1/dist/jquery.scrolling-tabs.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/jquery-bootstrap-scrolling-tabs@2.6.1/dist/jquery.scrolling-tabs.min.css">
 <style>
-    .AndrezzzMVPS {
+    .AndrezzzVPS {
         font-family: sans-serif;
         font-size: 14px;
     }
 
-    .AndrezzzMVPS .fade:not(.show) {
+    @media screen and (max-width: 480px){
+        .AndrezzzVPS span.badge {
+            font-size: 2vmin;
+        }
+    }
+    
+    .AndrezzzVPS .fade:not(.show) {
         display: none;
     }
 
-    .AndrezzzMVPS #loading {
-        position:fixed;
+    .AndrezzzVPS #loading {
+        position: fixed;
         color: #65686a;
         display:none;
         z-index:1000000;
     }
 
-    .AndrezzzMVPS #loading-spinner {
-        position:fixed;
+    .AndrezzzVPS #loading-spinner {
+        position: fixed;
         overflow: visible;
         margin: auto;
         top: 0;
@@ -31,7 +44,7 @@
         right: 0;
     }
 
-    .AndrezzzMVPS #loading:before {
+    .AndrezzzVPS #loading:before {
         content: '';
         display: block;
         position: fixed;
@@ -42,20 +55,21 @@
         background-color: rgba(0,0,0,0.3);
     }
 
-    .AndrezzzMVPS a {
+    .AndrezzzVPS a {
         cursor: pointer;
     }
-    .AndrezzzMVPS img {
+    
+    .AndrezzzVPS img {
         border-style: none;
         margin-bottom: 10px;
         vertical-align: middle;
     }
 
-    .AndrezzzMVPS img .flag {
+    .AndrezzzVPS img .flag {
         border: 1px solid #ddd;
     }
 
-    .AndrezzzMVPS .information {
+    .AndrezzzVPS .information {
         left: 0;
         right: 0;
         bottom: 0;
@@ -63,13 +77,13 @@
         position: absolute;
     }
 
-    .AndrezzzMVPS .form-label {
+    .AndrezzzVPS .form-label {
         color: #868888;
         margin-bottom: 0px;
         word-break: break-all;
     }
 
-    .AndrezzzMVPS .border {
+    .AndrezzzVPS .border {
         display: flex;
         min-height: 125px;
         position: relative;
@@ -77,57 +91,59 @@
         justify-content: center;
     }
 
-    .AndrezzzMVPS .mb-3, .AndrezzzMVPS .my-3 {
+    .AndrezzzVPS .mb-3,
+    .AndrezzzVPS .my-3 {
         margin-bottom: 1rem!important;
     }
 
-    .AndrezzzMVPS .without-mb {
+    .AndrezzzVPS .without-mb {
         margin-bottom: 0rem!important;
     }
 
-    .AndrezzzMVPS .p-2 {
+    .AndrezzzVPS .p-2 {
         padding: .5rem!important;
     }
 
-    .AndrezzzMVPS i.fa.fa-play.start {
+    .AndrezzzVPS i.fa-play.start {
         color: #06d79c;
         font-size: 30px;
     }
 
-    .AndrezzzMVPS i.fa.fa-stop.stop {
+    .AndrezzzVPS i.fa-stop.stop {
         color: #656373;
         font-size: 30px;
     }
 
-    .AndrezzzMVPS i.fa.fa-sync.reboot {
+    .AndrezzzVPS i.fa-sync.reboot {
         color: #398bf7;
         font-size: 30px;
     }
 
-    .AndrezzzMVPS .dashboard-title {
+    .AndrezzzVPS .vnc {
+        height: 25px;
         color: #3d3d3d;
         font-size: 22px;
     }
 
-    .AndrezzzMVPS .dashboard-value {
+    .AndrezzzVPS .dashboard-value {
         color: #586271 !important;
     }
 
-    .AndrezzzMVPS .usage-details {
+    .AndrezzzVPS .usage-details {
         border: 1px solid #e7e4e4;
         transition: all ease-in .2s;
     }
 
-    .AndrezzzMVPS .usage-details:hover {
-        border:1px solid transparent;
+    .AndrezzzVPS .usage-details:hover {
+        border: 1px solid transparent;
         box-shadow: 1px 1px 8px 6px #e5e3e3bf;
     }
 
-    .AndrezzzMVPS .overview-label {
+    .AndrezzzVPS .overview-label {
         color: #99abb4;
     }
 
-    .AndrezzzMVPS .progress.disk-bar {
+    .AndrezzzVPS .progress.disk-bar {
         height: 14px;
         margin-top: 25px;
         margin-bottom: 20px;
@@ -136,21 +152,22 @@
         box-shadow: none;
     }
 
-    .AndrezzzMVPS .used_disk_percent, .used-cpu {
+    .AndrezzzVPS .used_disk_percent,
+    .AndrezzzVPS .used-cpu {
         color: #1e88e5;
         font-size: 20px;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs {
+    .AndrezzzVPS .dashboard-tab .nav-tabs {
         border-bottom: 1px solid #dfd8d8;
         margin: 0;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs .nav-item {
+    .AndrezzzVPS .dashboard-tab .nav-tabs .nav-item {
         border-bottom: 1px solid #dfd8d8;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs li a {
+    .AndrezzzVPS .dashboard-tab .nav-tabs li a {
         position: relative;
         padding: 5px;
         margin-right: 10px;
@@ -162,7 +179,7 @@
         z-index: 2;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs li a:before {
+    .AndrezzzVPS .dashboard-tab .nav-tabs li a:before {
         content: "";
         width: 100%;
         height: 4px;
@@ -172,7 +189,7 @@
         left: 0;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs li a:after {
+    .AndrezzzVPS .dashboard-tab .nav-tabs li a:after {
         content: "";
         width: 0;
         height: 4px;
@@ -186,12 +203,12 @@
         z-index: 1;
     }
 
-    .AndrezzzMVPS .dashboard-tab .nav-tabs li a.active:after {
+    .AndrezzzVPS .dashboard-tab .nav-tabs li a.active:after {
         width: 100%;
         opacity: 1;
     }
 
-    .AndrezzzMVPS .vertical-tabs .nav-link {
+    .AndrezzzVPS .vertical-tabs .nav-link {
         color: #515a68;
         padding: 7px 5px;
         margin-bottom: 10px;
@@ -199,50 +216,53 @@
         text-align: left!important;
     }
 
-    .AndrezzzMVPS .vertical-tabs .nav-link.active {
+    .AndrezzzVPS .vertical-tabs .nav-link.active {
         border-radius: 0px;
         color: #2948ff;
     }
 
-    .AndrezzzMVPS .v-tabs-container{
+    .AndrezzzVPS .v-tabs-container {
         border-right: 1px solid #dfd8d8;
     }
 
-    .AndrezzzMVPS .nav-pills .nav-link.active {
+    .AndrezzzVPS .nav-pills .nav-link.active {
         background-color: unset;
     }
 
-    .AndrezzzMVPS .custom-control-input:checked~.custom-control-label::before {
+    .AndrezzzVPS .custom-control-input:checked~.custom-control-label::before {
         color: #fff;
         border-color: #007bff;
         background-color: #007bff;
     }
 
-    .AndrezzzMVPS .info-text {
+    .AndrezzzVPS .info-text {
         color: #398bf7;
         cursor: pointer;
     }
 
-    .AndrezzzMVPS #graphs-tab .nav-link, .AndrezzzMVPS #sub-tasks-and-logs .nav-link {
+    .AndrezzzVPS #graphs-tab .nav-link,
+    .AndrezzzVPS #sub-tasks-and-logs .nav-link {
         color: #576170;
         transition: all 0.4s linear;
     }
 
-    .AndrezzzMVPS #graphs-tab .nav-link.active, .AndrezzzMVPS #sub-tasks-and-logs .nav-link.active {
+    .AndrezzzVPS #graphs-tab .nav-link.active,
+    .AndrezzzVPS #sub-tasks-and-logs .nav-link.active {
         border-radius: 0px;
         color: #ffffff;
         background: linear-gradient(to right, #396afc, #2948ff);
     }
 
-    .AndrezzzMVPS .prev-mnth.green_but, .AndrezzzMVPS .next-mnth.green_but {
+    .AndrezzzVPS .prev-mnth.green_but,
+    .AndrezzzVPS .next-mnth.green_but {
         padding: 4px 10px;
     }
 
-    .AndrezzzMVPS .graphs img {
+    .AndrezzzVPS .graphs img {
         width: 100%;
     }
 
-    .AndrezzzMVPS .submit-btn {
+    .AndrezzzVPS .submit-btn {
         background-color: #398bf7;
         border:none;
         border-radius: 4px;
@@ -252,7 +272,7 @@
         transition: 0.2s ease-in;
     }
 
-    .AndrezzzMVPS .cancel-btn {
+    .AndrezzzVPS .cancel-btn {
         background-color: #5a6268;
         border:none;
         border-radius: 4px;
@@ -262,51 +282,51 @@
         transition: 0.2s ease-in;
     }
 
-    .AndrezzzMVPS .submit-btn:hover {
+    .AndrezzzVPS .submit-btn:hover {
         color: #ffffff !important;
         box-shadow:0 14px 26px -12px #1769ff6b, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #1769ff33;
     }
 
-    .AndrezzzMVPS .cancel-btn:hover {
+    .AndrezzzVPS .cancel-btn:hover {
         color: #ffffff !important;
         box-shadow:0 14px 26px -12px #000000, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #07183533;
     }
 
-    .AndrezzzMVPS .modal-title {
+    .AndrezzzVPS .modal-title {
         font-weight: 400;
         color: #455a64;
     }
 
-    .AndrezzzMVPS .modal-title i.success {
+    .AndrezzzVPS .modal-title i.success {
         font-size: 40px;
         color: #06d79c;
         vertical-align: middle;
     }
 
-    .AndrezzzMVPS .modal-title i.warning {
+    .AndrezzzVPS .modal-title i.warning {
         font-size: 40px;
         color: orange;
         vertical-align: middle;
     }
 
-    .AndrezzzMVPS .modal-title i.error {
+    .AndrezzzVPS .modal-title i.error {
         font-size: 40px;
         color: #ef5350;
         vertical-align: middle;
     }
 
-    .AndrezzzMVPS .modal-body {
+    .AndrezzzVPS .modal-body {
         color: #868888;
         font-weight: 500;
         line-height: 30px;
         margin-bottom: 0px;
     }
 
-    .AndrezzzMVPS .modal-body p {
+    .AndrezzzVPS .modal-body p {
         margin-bottom: 0px;
     }
 
-    .AndrezzzMVPS .link-btn {
+    .AndrezzzVPS .link-btn {
         background-color: #398bf7;
         border:none;
         border-radius: 4px;
@@ -317,28 +337,28 @@
         transition: 0.2s ease-in;
     }
 
-    .AndrezzzMVPS .link-btn:hover {
+    .AndrezzzVPS .link-btn:hover {
         text-decoration: none;
         color: #ffffff;
         box-shadow: 0 14px 26px -12px rgba(23, 105, 255, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(23, 105, 255, 0.2);
     }
 
-    .AndrezzzMVPS .v-tab-heading {
+    .AndrezzzVPS .v-tab-heading {
         color: #515557;
         font-size: 18px;
     }
 
-    .AndrezzzMVPS .distro_name.media-heading {
+    .AndrezzzVPS .distro_img {
         color: #3d3d3d;
         font-size: 22px;
     }
 
-    .AndrezzzMVPS .version {
+    .AndrezzzVPS .version {
         color: #586271;
         font-size: 16px;
     }
 
-    .AndrezzzMVPS .info-icon {
+    .AndrezzzVPS .info-icon {
         background-color: #007bff;
         color: #fff;
         padding: 4px 12px;
@@ -346,17 +366,17 @@
         border-radius: 4px;
     }
 
-    .AndrezzzMVPS .info-icon:hover,
-    .AndrezzzMVPS .info-icon:focus {
+    .AndrezzzVPS .info-icon:hover,
+    .AndrezzzVPS .info-icon:focus {
         border:none;
         box-shadow: 0 14px 26px -12px rgba(23, 105, 255, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(23, 105, 255, 0.2);
     }
 
-    .AndrezzzMVPS .info-icon i {
+    .AndrezzzVPS .info-icon i {
         font-size: 12px;
     }
 
-    .AndrezzzMVPS .os_badge {
+    .AndrezzzVPS .os_badge {
         border: 1px solid #ccc;
         cursor: pointer;
         transition: height 0.5s;
@@ -364,12 +384,12 @@
         position: relative;
     }
 
-    .AndrezzzMVPS #os_list .dropdown-menu{
+    .AndrezzzVPS #os_list .dropdown-menu {
         max-height: 200px;
         overflow-y: auto;
     }
 
-    .AndrezzzMVPS .os_badge_list a{
+    .AndrezzzVPS .os_badge_list a {
         color: #576170;
         text-decoration: none;
         outline: none;
@@ -378,92 +398,92 @@
         background-color: #fff;
     }
 
-    .AndrezzzMVPS .os_badge_list a:hover {
+    .AndrezzzVPS .os_badge_list a:hover {
         color: #2f3235;
         background-color: #f9f6f6;
     }
 
-    .AndrezzzMVPS .os_badge_list .SelectedOS{ 
+    .AndrezzzVPS .os_badge_list .SelectedOS {
         color: #ffffff;
         background-color: #2196F3;
     }
 
-    .AndrezzzMVPS .os_badge.selected .version,
-    .AndrezzzMVPS .os_badge.selected .distro_name.media-heading, .os_badge.selected i{
+    .AndrezzzVPS .os_badge.selected .distro_name.media-heading,
+    .AndrezzzVPS .os_badge.selected i {
         color: #ffffff;
     }
         
-    .AndrezzzMVPS .os_badge.selected {
+    .AndrezzzVPS .os_badge.selected {
         color: #fff;
         background-color: #06d79c;
     }
 
-    .AndrezzzMVPS .os_badge i {
+    .AndrezzzVPS .os_badge i {
         position: absolute;
         top: 26px;
         right: 16px;
         color: #aaa;
     }
 
-    .AndrezzzMVPS .os_badge .media-left {
+    .AndrezzzVPS .os_badge .media-left {
         padding: 8px;
     }
 
-    .AndrezzzMVPS .os_badge .media-body {
+    .AndrezzzVPS .os_badge .media-body {
         vertical-align: middle;
         padding: 8px;
     }
 
-    .AndrezzzMVPS .os_badge .version {
+    .AndrezzzVPS .os_badge .version {
         color: #888;
     }
 
-    .AndrezzzMVPS .os_badge.expanded {
+    .AndrezzzVPS .os_badge.expanded {
         position: relative;
         z-index: 999;
     }
 
-    .AndrezzzMVPS .os_badge .dropdown-toggle::after{
+    .AndrezzzVPS .os_badge .dropdown-toggle::after {
         content: none;
     }
 
-    .AndrezzzMVPS .tab-content>.tab-pane {
+    .AndrezzzVPS .tab-content>.tab-pane {
         display: none;
     }
  
-    .AndrezzzMVPS .tab-content>.active {
+    .AndrezzzVPS .tab-content>.active {
         display: block;
     }
 
-    .AndrezzzMVPS .head {
+    .AndrezzzVPS .head {
         margin-bottom: 10px;
     }
 
-    .AndrezzzMVPS .head>img {
+    .AndrezzzVPS .head>img {
         width: 32px;
     }
 
-    .AndrezzzMVPS .restore-icon {
+    .AndrezzzVPS .restore-icon {
         font-size: 17px;
     }
 
-    .AndrezzzMVPS .create {
+    .AndrezzzVPS .create {
         color: #06d79c;
     }
 
-    .AndrezzzMVPS .delete {
+    .AndrezzzVPS .delete {
         color: #ff0000;
     }
 
-    .AndrezzzMVPS .table.dataTable.no-footer {
+    .AndrezzzVPS .table.dataTable.no-footer {
         border-bottom: 1px solid #5d5b63 !important;
     }
 
-    .AndrezzzMVPS table.tablesorter {
-        box-shadow: 0 2px 12px -3px rgba(0,0,0,0.5);
+    .AndrezzzVPS table.tablesorter {
+        box-shadow: 0 2px 12px -3px rgba(0, 0, 0, 0.5);
     }
 
-    .AndrezzzMVPS table.dataTable {
+    .AndrezzzVPS table.dataTable {
         clear: both;
         margin-top: 6px !important;
         margin-bottom: 6px !important;
@@ -472,7 +492,7 @@
         border-spacing: 0;
     }
 
-    #firewallTable th, #backupTable th {
+    #backupTable th {
         color: #ffffff;
         background-color: #36304a !important;
         border: unset !important;
@@ -482,11 +502,11 @@
         z-index: 99;
     }
 
-    .AndrezzzMVPS .fa-1x{
+    .AndrezzzVPS .fa-1x {
         font-size: 20px !important;
     }
 
-    .AndrezzzMVPS .gray-txt {
+    .AndrezzzVPS .grey-txt {
         color: #666;
     }
 </style>
@@ -496,8 +516,8 @@
         return document.getElementById(id);
     }
 
-    function AndrezzzMVPS_API(action, alert = true, json = {}) {
-        AndrezzzMVPS_Loading(true);
+    function AndrezzzVPS_API(action, alert = true, json = {}) {
+        AndrezzzVPS_Loading(true);
         
         WHMCS.http.jqClient.post('clientarea.php?action=productdetails&id={$serviceid}&modop=custom&a=ClientAreaAPI&api=' + action, json,
             function(data) {
@@ -548,7 +568,7 @@
 
                                 if (backup.status === 'ok') {
                                     status.innerHTML = '<div class="badge badge-success">Completed</div>';
-                                    actions.innerHTML = '<a href="#" onclick="AndrezzzMVPS_API(\'Restore backup\', true, { backup: ' + backup.id + ' });return false;"><i class="fas fa-history restore-icon text-secondary mr-2"></i></a><a href="#" onclick="AndrezzzMVPS_API(\'Delete backup\', true, { backup: ' + backup.id + ' });return false;"><i class="fa fa-1x fa-times delete" aria-hidden="true"></i></a>';
+                                    actions.innerHTML = '<a href="#" onclick="AndrezzzVPS_API(\'Restore backup\', true, { backup: ' + backup.id + ' });return false;"><i class="fas fa-history restore-icon text-secondary mr-2"></i></a><a href="#" onclick="AndrezzzVPS_API(\'Delete backup\', true, { backup: ' + backup.id + ' });return false;"><i class="fas fa-1x fa-times delete" aria-hidden="true"></i></a>';
                                 } else if (backup.status === 'preparing') {
                                     status.innerHTML = '<div class="badge badge-info">Preparing</div>';
                                 } else if (backup.status === 'creating') {
@@ -561,11 +581,11 @@
                             break;
 
                         case 'Create backup':
-                            AndrezzzMVPS_API('List backups', false);
+                            AndrezzzVPS_API('List backups', false);
                             break;
 
                         case 'Delete backup':
-                            AndrezzzMVPS_API('List backups', false);
+                            AndrezzzVPS_API('List backups', false);
                             break;
 
                         case 'Get Firewall rules':
@@ -590,58 +610,58 @@
                                 protocol.innerHTML = rule.protocol;
                                 source.innerHTML = rule.source;
                                 note.innerHTML = rule.note;
-                                actions.innerHTML = '<a href="#" onclick="AndrezzzMVPS_API(\'Delete Firewall rule\', true, { rule_id: ' + rule.id + ' });return false;"><i class="fa fa-1x fa-times delete" aria-hidden="true"></i></a>';
+                                actions.innerHTML = '<a href="#" onclick="AndrezzzVPS_API(\'Delete Firewall rule\', true, { rule_id: ' + rule.id + ' });return false;"><i class="fas fa-1x fa-times delete" aria-hidden="true"></i></a>';
                             }
 
                             break;
 
                         case 'Add Firewall rules':
-                            AndrezzzMVPS_API('Get Firewall rules', false);
+                            AndrezzzVPS_API('Get Firewall rules', false);
                             break;
 
                         case 'Delete Firewall rule':
-                            AndrezzzMVPS_API('Get Firewall rules', false);
+                            AndrezzzVPS_API('Get Firewall rules', false);
                             break;
 
                         case 'Commit Firewall rules':
-                            AndrezzzMVPS_API('Get Firewall rules', false);
+                            AndrezzzVPS_API('Get Firewall rules', false);
                             break;
                     }
 
-                    AndrezzzMVPS_Loading(false);
+                    AndrezzzVPS_Loading(false);
                     
                     if (alert) {
                         if (typeof data.data === 'string') {
-                            $('#AndrezzzMVPS-AlertSuccessMsg').html(data.data);
+                            $('#AndrezzzVPS-AlertSuccessMsg').html(data.data);
                         } else {
-                            $('#AndrezzzMVPS-AlertSuccessMsg').html('{$LANG.moduleactionsuccess}');
+                            $('#AndrezzzVPS-AlertSuccessMsg').html('{$LANG.moduleactionsuccess}');
                         }
 
-                        $('#AndrezzzMVPS-AlertSuccess').hide().removeClass('hidden').slideDown();
+                        $('#AndrezzzVPS-AlertSuccess').hide().removeClass('hidden').slideDown();
 
                     	setTimeout(function() {
-							$('#AndrezzzMVPS-AlertSuccess').slideUp();
+							$('#AndrezzzVPS-AlertSuccess').slideUp();
 						}, 5000);
                     }
                 } else {
-                    AndrezzzMVPS_Loading(false);
+                    AndrezzzVPS_Loading(false);
                     
-                    $('#AndrezzzMVPS-AlertFailedMsg').html(data.message);
-                    $('#AndrezzzMVPS-AlertFailed').hide().removeClass('hidden').slideDown();
+                    $('#AndrezzzVPS-AlertFailedMsg').html(data.message);
+                    $('#AndrezzzVPS-AlertFailed').hide().removeClass('hidden').slideDown();
 
                     setTimeout(function() {
-                        $('#AndrezzzMVPS-AlertFailed').slideUp();
+                        $('#AndrezzzVPS-AlertFailed').slideUp();
                     }, 5000);
                 }
             }
         );
     }
 
-    function AndrezzzMVPS_VNC() {
+    function AndrezzzVPS_VNC() {
         window.open('{$WEB_ROOT}/clientarea.php?action=productdetails&id={$serviceid}&modop=custom&a=VNC', '_blank', 'toolbar=0,location=0,menubar=0');
     }
 
-    function AndrezzzMVPS_ShowTooltip(x, y, contents) {
+    function AndrezzzVPS_ShowTooltip(x, y, contents) {
         $('<div id="tooltip">' + contents + '</div>').css({
             position: 'absolute',
             display: 'none',
@@ -655,7 +675,7 @@
         }).appendTo('body').fadeIn(200);
     }
 
-    function AndrezzzMVPS_MakeData(data) {
+    function AndrezzzVPS_MakeData(data) {
         var now = new Date().getTime();
         var updateInterval = 1000;
 
@@ -670,7 +690,7 @@
         return fdata;
     }
 
-    function AndrezzzMVPS_Loading(status) {
+    function AndrezzzVPS_Loading(status) {
         $_('loading').style.left = ((document.body.clientWidth - $('#loading').width()) / 2).toString() + 'px';
 
         if (status) {
@@ -680,7 +700,7 @@
         }
     }
     
-    function AndrezzzMVPS_LiveResourceGraph(id, data, options, showIn, showTime) {
+    function AndrezzzVPS_LiveResourceGraph(id, data, options, showIn, showTime) {
         var plot = $.plot($('#' + id), data, options);
 
         if (!('tooltip' in options)) {
@@ -720,9 +740,9 @@
                                 show_ntw_in = 'GB/s';
                             }
 
-                            AndrezzzMVPS_ShowTooltip(item.pageX, item.pageY, item.series.label + ' ' + yval + ' ' + show_ntw_in + '&nbsp; at &nbsp;' + time);
+                            AndrezzzVPS_ShowTooltip(item.pageX, item.pageY, item.series.label + ' ' + yval + ' ' + show_ntw_in + '&nbsp; at &nbsp;' + time);
                         } else {
-                            AndrezzzMVPS_ShowTooltip(item.pageX, item.pageY, parseFloat(y) + ' ' + showIn + time);
+                            AndrezzzVPS_ShowTooltip(item.pageX, item.pageY, parseFloat(y) + ' ' + showIn + time);
                         }
 
                     }
@@ -785,13 +805,13 @@
         }
 
         var cpuDataset = [
-            { label: '', data: AndrezzzMVPS_MakeData(cpudata), color: '#e51e88' }
+            { label: '', data: AndrezzzVPS_MakeData(cpudata), color: '#e51e88' }
         ];
 
         var timerServerLoads;
-        AndrezzzMVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
+        AndrezzzVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
 
-		function AndrezzzMVPS_updateStatitics() {
+		function AndrezzzVPS_UpdateStatitics() {
             const serverInfoInitial = JSON.parse('{$serverInfo|@json_encode}');
 			clearTimeout(timerServerLoads);
 
@@ -822,15 +842,15 @@
                             cpudata.push(parseFloat(serverInfo.cpu_usage));
 
                             cpuDataset = [
-                                { label: '', data: AndrezzzMVPS_MakeData(cpudata), color: '#3498DB' }
+                                { label: '', data: AndrezzzVPS_MakeData(cpudata), color: '#3498DB' }
                             ];
 
-                            AndrezzzMVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
+                            AndrezzzVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
 
                             $('.used-cpu').html(serverInfo.cpu_usage + '%');
                         } else {
-                            $('#AndrezzzMVPS-AlertFailedMsg').html(serverInfo.message);
-                            $('#AndrezzzMVPS-AlertFailed').hide().removeClass('hidden').slideDown();
+                            $('#AndrezzzVPS-AlertFailedMsg').html(serverInfo.message);
+                            $('#AndrezzzVPS-AlertFailed').hide().removeClass('hidden').slideDown();
                         }
                     }
                 );
@@ -858,21 +878,21 @@
                 cpudata.push(parseFloat(serverInfo.cpu_usage));
 
                 cpuDataset = [
-                    { label: '', data: AndrezzzMVPS_MakeData(cpudata), color: '#3498DB' }
+                    { label: '', data: AndrezzzVPS_MakeData(cpudata), color: '#3498DB' }
                 ];
 
-                AndrezzzMVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
+                AndrezzzVPS_LiveResourceGraph('cpuHistory', cpuDataset, cpuOptions, '%', false);
 
                 $('.used-cpu').html(serverInfo.cpu_usage + '%');
             }
 
-            timerServerLoads = setTimeout(AndrezzzMVPS_updateStatitics, 10000);
+            timerServerLoads = setTimeout(AndrezzzVPS_UpdateStatitics, 10000);
 		}
 
-		AndrezzzMVPS_updateStatitics();
+		AndrezzzVPS_UpdateStatitics();
     });
 
-	function AndrezzzMVPS_ChooseOS(button) {
+	function AndrezzzVPS_ChooseOS(button) {
 		var newOS = $_('newOS').value;
 
 		if (newOS !== '0') {
@@ -891,13 +911,13 @@
 	}
 </script>
 
-<div class="AndrezzzMVPS" style="display: block">
+<div class="AndrezzzVPS" style="display: block;">
     <div id="loading" class="font-weight-bold" style="display: none;">
         <span class="spinner-border spinner-border-sm" style="width: 3rem; height: 3rem;" id="loading-spinner" role="status" aria-hidden="true"></span>
     </div>
 
-    {include file="$template/includes/alert.tpl" type="success" msg='<span id="AndrezzzMVPS-AlertSuccessMsg"></span>' textcenter=true hide=true idname="AndrezzzMVPS-AlertSuccess"}
-    {include file="$template/includes/alert.tpl" type="danger" msg=$LANG.moduleactionfailed|cat:': <span id="AndrezzzMVPS-AlertFailedMsg"></span>' textcenter=true hide=true idname="AndrezzzMVPS-AlertFailed"}
+    {include file="$template/includes/alert.tpl" type="success" msg='<span id="AndrezzzVPS-AlertSuccessMsg"></span>' textcenter=true hide=true idname="AndrezzzVPS-AlertSuccess"}
+    {include file="$template/includes/alert.tpl" type="danger" msg=$LANG.moduleactionfailed|cat:': <span id="AndrezzzVPS-AlertFailedMsg"></span>' textcenter=true hide=true idname="AndrezzzVPS-AlertFailed"}
 
     <div class="title-block text-center dashboard-title mb-3">VPS Information</div>
 
@@ -905,7 +925,7 @@
         <div class="col-md-6 mb-3 text-center">
             <div class="border p-2">
                 <div class="mb-2">
-                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$serverInfo['operatingSystem']['image']}.png" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
+                    <span><img src="{$serverInfo['operatingSystem']['image']}" width="64px" height="64px" alt="{$serverInfo['operatingSystem']['name']}"/></span>
                 </div>
                 <div class="information">
                     <span class="form-label dashboard-value d-inline-block mb-2">{$serverInfo['operatingSystem']['name']}</span>
@@ -915,7 +935,7 @@
         <div class="col-md-6 mb-3 text-center">
             <div class="border p-2">
                 <div class="mb-3">
-                    <span><img class="flag" src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/flags/{$serverInfo['location']['img']}.png" height="70px"/></span>
+                    <span><img class="flag" src="{$serverInfo['location']['image']}" height="64px"/></span>
                 </div>
                 <div class="information">
                     <span class="form-label dashboard-value d-inline-block mb-2">{$serverInfo['location']['name']}</span>
@@ -925,7 +945,7 @@
         <div class="col-md-6 mb-3 text-center">
             <div class="border p-2">
                 <div class="mb-2">
-                    <span><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/{$serverInfo['status']}.png" height="64px"/></span>
+                    <span><img src="{$serverInfo['statusImage']}" height="64px"/></span>
                 </div>
                 <div class="information">
                     <span class="form-label dashboard-value d-inline-block mb-2">{$serverInfo['statusDescription']}</span>
@@ -936,13 +956,13 @@
             <div class="border p-2">
                 <div class="row w-100">
                     <div class="col-4 without-mb text-center" tooltip="{if $serverInfo['status'] !== 'running'}Start the VPS{else}Stop the VPS{/if}" data-original-title="" title="">
-                        <a onclick="AndrezzzMVPS_API('{if $serverInfo['status'] !== 'running'}Start{else}Stop{/if}');"><i class="fa fa-{if $serverInfo['status'] !== 'running'}play start{else}stop stop{/if} mr-2" aria-hidden="true"></i></a>
+                        <a onclick="AndrezzzVPS_API('{if $serverInfo['status'] !== 'running'}Start{else}Stop{/if}');return false;"><i class="fas fa-{if $serverInfo['status'] !== 'running'}play start{else}stop stop{/if} mr-2" aria-hidden="true"></i></a>
                     </div>
                     <div class="col-4 without-mb text-center" tooltip="Reboot the VPS" data-original-title="" title="">
-                        <a onclick="AndrezzzMVPS_API('Reboot');"><i class="fa fa-sync reboot mr-2" aria-hidden="true"></i></a>
+                        <a onclick="AndrezzzVPS_API('Reboot');return false;"><i class="fas fa-sync reboot mr-2" aria-hidden="true"></i></a>
                     </div>
                     <div class="col-4 without-mb text-center" tooltip="Connect to the VPS via VNC" data-original-title="" title="">
-                        <a onclick="AndrezzzMVPS_VNC();"><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/vnc.png" height="30px"/></a>
+                        <a onclick="AndrezzzVPS_VNC();"><img src="{$images['vnc']}" class="vnc"/></a>
                     </div>
                     <div class="col-md-12">
                         <label class="form-label d-inline-block">Uptime:</label>
@@ -962,25 +982,25 @@
     <div class="dashboard-tab" id="dashboard">
         <ul class="nav nav-tabs mb-4 dash-tabs" id="pills-tab" role="tablist">
             <li class="nav-item">
-                <a class="nav-link active" id="overview-tab" data-toggle="pill" href="#overview" role="tab" aria-controls="overview" aria-selected="false">Overview</a>
+                <a class="nav-link active" id="overview-tab" data-toggle="pill" href="#overview" role="tab" aria-controls="overview" aria-selected="true"><i class="fas fa-eye"></i> Overview</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="graphs-tab" data-toggle="pill" href="#graphs" onclick="AndrezzzMVPS_API('Graphs', false, { time: 'hour' });" role="tab" aria-controls="graphs" aria-selected="false">Graphs</a>
+                <a class="nav-link" id="graphs-tab" data-toggle="pill" href="#graphs" onclick="AndrezzzVPS_API('Graphs', false, { time: 'hour' });return false;" role="tab" aria-controls="graphs" aria-selected="false"><i class="fas fa-search"></i> Graphs</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="settings-tab" data-toggle="pill" href="#settings" role="tab" aria-controls="settings" aria-selected="false">Settings</a>
+                <a class="nav-link" id="backups-tab" data-toggle="pill" href="#backups" onclick="AndrezzzVPS_API('List backups', false);return false;" role="tab" aria-controls="backups" aria-selected="false"><i class="fas fa-archive"></i> Backups</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="backups-tab" data-toggle="pill" href="#backups" onclick="AndrezzzMVPS_API('List backups', false);" role="tab" aria-controls="backups" aria-selected="false">Backups</a>
+                <a class="nav-link" id="rdns-tab" data-toggle="pill" href="#rdns" role="tab" aria-controls="rdns" aria-selected="false"><i class="fas fa-ethernet"></i> Reverse DNS</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" id="rdns-tab" data-toggle="pill" href="#rdns" role="tab" aria-controls="rdns" aria-selected="false">Reverse DNS</a>
+                <a class="nav-link" id="settings-tab" data-toggle="pill" href="#settings" role="tab" aria-controls="settings" aria-selected="false"><i class="fas fa-cog"></i> Settings</a>
             </li>
         </ul>
         <div class="tab-content" id="pills-tabContent">
             <div class="tab-pane fade show active" id="overview" role="tabpanel" aria-labelledby="overview-tab">
                 <div class="head">
-                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/eye.png">
+                    <img src="{$images['eye']}">
                     <span class="h3">Overview</span>
                 </div>
 
@@ -1022,12 +1042,11 @@
             </div>
             <div class="tab-pane fade" id="graphs" role="tabpanel" aria-labelledby="graphs-tab">
                 <div class="head">
-                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/search.png">
+                    <img src="{$images['search']}">
                     <span class="h3">Graphs</span>
                 </div>
 
-                <div class="panel bw_div">
-                    <div id="bw_div">
+                <div class="panel">
                         <div class="text-center">
                             <ul class="nav nav-pills mb-3 d-inline-flex" id="graphs-tab" role="tablist">
                                 <li class="nav-item mx-2">
@@ -1046,16 +1065,16 @@
                         </div>
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="cpu" role="tabpanel" aria-labelledby="cpu-tab">
-                                <span id="cpu-graph"><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/loading.png"/></span>
+                            <span id="cpu-graph"><img src="{$images['loading']}"/></span>
                             </div>
                             <div class="tab-pane fade" id="ram" role="tabpanel" aria-labelledby="ram-tab">
-                                <span id="ram-graph"><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/loading.png"/></span>
+                            <span id="ram-graph"><img src="{$images['loading']}"/></span>
                             </div>
                             <div class="tab-pane fade" id="disk" role="tabpanel" aria-labelledby="disk-tab">
-                                <span id="disk-graph"><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/loading.png"/></span>
+                            <span id="disk-graph"><img src="{$images['loading']}"/></span>
                             </div>
                             <div class="tab-pane fade" id="network" role="tabpanel" aria-labelledby="network-tab">
-                                <span id="network-graph"><img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/loading.png"/></span>
+                            <span id="network-graph"><img src="{$images['loading']}"/></span>
                             </div>
                         </div>
                     </div>
@@ -1063,68 +1082,69 @@
             </div>
             <div class="tab-pane fade" id="settings" role="tabpanel" aria-labelledby="settings-tab">
                 <div class="row vertical-tabs">
-                    <div class="col-md-3 v-tabs-container" style="max-width: 15%!important;">
+                    <div class="col-12 col-md-3 col-lg-2 v-tabs-container">
                         <div class="nav flex-md-column mx-auto left-side-tabs mb-4 mb-md-0" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                            <a class="nav-link mr-2 mr-md-0 active" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="false" style="display: block">Password</a>
+                            <a class="nav-link mr-2 mr-md-0 active" id="password-tab" data-toggle="pill" href="#password" role="tab" aria-controls="password" aria-selected="true" style="display: block">Password</a>
                             <a class="nav-link mr-2 mr-md-0" id="reinstall-tab" data-toggle="pill" href="#reinstall" role="tab" aria-controls="reinstall" aria-selected="false" style="display: block">Reinstall</a>
-                            <a class="nav-link mr-2 mr-md-0" id="firewall-tab" data-toggle="pill" href="#firewall" onclick="AndrezzzMVPS_API('Get Firewall rules', false);" role="tab" aria-controls="firewall" aria-selected="false" style="display: block">Firewall</a>
+                            <a class="nav-link mr-2 mr-md-0" id="firewall-tab" data-toggle="pill" href="#firewall" onclick="AndrezzzVPS_API('Get Firewall rules', false);" role="tab" aria-controls="firewall" aria-selected="false" style="display: block">Firewall</a>
                         </div>
                     </div>
 					<div class="col-md-10">
                         <div class="tab-content vertical-tab-content">
                             <div class="tab-pane fade active show" id="password" role="tabpanel" aria-labelledby="password-tab">
                                 <div class="head">
-                                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/settings.png">
+                                    <img src="{$images['lock']}">
                                     <span class="h3">Password</span>
                                 </div>
 
                                 <div class="badge badge-warning mb-3">The installation password is removed from our systems after 72 hours. It is mandatory for you to change the password on your first login!</div>
                                 
                                 <label class="form-label d-inline-block">Password:</label>
-                                <span class="form-label dashboard-value d-inline-block mr-2">{if $serverInfo['root'] != ''}{$serverInfo['root']}{else}Expired{/if}</span>
-                                <br/>
-                                <br/>
-                                <button onclick="AndrezzzMVPS_API('Reset root');" class="submit-btn">Reset Password</button>
+                                <button onclick="AndrezzzVPS_API('Reset root');return false;" class="submit-btn">Reset Password</button>
                             </div>
                             <div class="tab-pane fade" id="reinstall" role="tabpanel" aria-labelledby="reinstall-tab">
                                 <div class="head">
-                                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/settings.png">
+                                    <img src="{$images['installing']}">
                                     <span class="h3">Reinstall</span>
                                 </div>
 
                                 <div class="badge badge-danger mb-3">Please understand that by reinstalling, all the data will be wiped from the server.</div>
 
-                                <div id="reinstallIntructions" class="col-lg-10 col-12 mx-auto">
+                                <div id="reinstallIntructions" class="col-12 mx-auto">
                                     <label class="form-label">Select OS:</label>
                                     
                                     <div id="os_list" class="row mb-4">
                                         {foreach from=$operatingSystems key=$group item=$operatingSystemsGroup}
-                                        <div id="{$group}-os" class="col os_badge media dropdown show">
-                                            <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <div class="col-12 col-sm-6 mb-2">
+                                            <div id="{$group}-os" class="os_badge media dropdown">
+                                                <button class="btn dropdown-toggle border-0 w-100 p-0" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <div class="media-left p-1 float-left">
-                                                    <img class="distro_img media-object" src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/os/{$operatingSystemsGroup['image']}.png">
+                                                        <img class="distro_img media-object" src="{$operatingSystemsGroup['image']}">
                                                 </div>
+
                                                 <div class="media-body float-left text-left p-2">
                                                     <h4 class="distro_name media-heading">{$operatingSystemsGroup['name']}</h4>
                                                     <span id="{$group}-version" class="version">SELECT VERSION</span>
                                                 </div>
                                             </button>
-                                            <div class="os_badge_list dropdown-menu w-100" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 68px, 0px); top: 0px; left: 0px; will-change: transform;">
+
+                                                <div class="os_badge_list dropdown-menu w-100">
                                                 {foreach from=$operatingSystemsGroup['versions'] item=$operatingSystem}
-                                                <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzMVPS_ChooseOS(this);return false;">{$operatingSystem['name']}</a>
+                                                    <a href="#" data-os="{$operatingSystem['id']}" data-group="{$group}" onclick="AndrezzzVPS_ChooseOS(this);return false;">{$operatingSystem['name']}</a>
                                                 {/foreach}
+                                                </div>
                                             </div>
                                         </div>
                                         {/foreach}
                                     </div>
 
                                     <input type="hidden" id="newOS" value="0"/>				
-                                    <button onclick="AndrezzzMVPS_API('Reinstall', true, { os: $_('newOS').value });" class="submit-btn">Reinstall</button>
+                                    <button onclick="AndrezzzVPS_API('Reinstall', true, { os: $_('newOS').value });" class="submit-btn">Reinstall</button>
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="firewall" role="tabpanel" aria-labelledby="firewall-tab">
                                 <div class="head">
-                                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/settings.png">
+                                    <img src="{$images['settings']}">
                                     <span class="h3">Firewall</span>
                                 </div>
 
@@ -1168,7 +1188,7 @@
                                                     <input class="form-control" id="firewallNote" type="text" maxlength="64" placeholder="Notes (optional)">
                                                 </td>
                                                 <td>
-                                                    <a href="#" onclick="AndrezzzMVPS_API('Add Firewall rules', true, { firewallAction: $_('firewallAction').value, protocol: $_('firewallProtocol').value, source: $_('firewallSource').value, port: $_('firewallPort').value, note: $_('firewallNote').value });return false;"><i class="fa fa-1x fa-plus create" aria-hidden="true"></i></a>
+                                                    <a href="#" onclick="AndrezzzVPS_API('Add Firewall rules', true, { firewallAction: $_('firewallAction').value, protocol: $_('firewallProtocol').value, source: $_('firewallSource').value, port: $_('firewallPort').value, note: $_('firewallNote').value });return false;"><i class="fas fa-1x fa-plus create" aria-hidden="true"></i></a>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -1177,72 +1197,7 @@
                                 
                                 <span class="badge badge-warning">The rules must be committed in order to take effect.</span>
                                 <br/>
-                                <button onclick="AndrezzzMVPS_API('Commit Firewall rules');" class="submit-btn">Commit Firewall</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="backups" role="tabpanel" aria-labelledby="backups-tab">
-                <div class="head">
-                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/cloud.png">
-                    <span class="h3">Backups</span>
-                </div>
-
-                <div class="panel bw_div">
-                    <div class="gray-txt mb-3">The dates for which backups of this VPS are available are listed below. You can restore or delete them accordingly.</div>
-
-                    <div class="table-responsive">
-                        <table id="backupTable" cellpadding="0" cellspacing="0" border="0" class="table table-hover tablesorter" width="100%">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Size</th>
-                                    <th>Type</th>
-                                    <th>Status</th>
-                                    <th width="50">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                    </div>
-
-                    <button onclick="AndrezzzMVPS_API('Create backup');" class="submit-btn">Backup Now</button>
-
-                    <br/>
-                    <br/>
-                    
-                    <div class="gray-txt mb-3">
-                        * Please keep in mind that the new backups will replace the older ones.<br/>
-                        ** The automated backups will also replace your manual backups unless the automated backups are disabled.<br/>
-                        *** The automated backups are made 2 times a week and are part of our disaster recovery plan. If you disable the automated backups, you also disable any chance of recovery in case of a disaster.<br/>
-                        **** The backup's file system might not be fully consistent if the VPS was writing to the filesystem at the moment of the backup. For fully consistent backups, the server must be stopped while the backup is being created.
-                    </div>
-                </div>
-            </div>
-            <div class="tab-pane fade" id="rdns" role="tabpanel" aria-labelledby="rdns-tab">
-                <div class="head">
-                    <img src="{$WEB_ROOT}/modules/servers/AndrezzzMVPS/template/img/search.png">
-                    <span class="h3">rDNS Records</span>
-                </div>
-
-                <div id="vpsrdns_div">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="rdnsIP" class="form-label mr-1 d-inline-block">IP Address</label>
-                                <select class="form-control" name="rdnsIP" id="rdnsIP">
-                                    {foreach from=$serverInfo['ips'] item=$ip}
-                                    <option value="{$ip}">{$ip}</option>
-                                    {/foreach}
-                                    {if $serverInfo['ipv6'] !== ''}<option value="{$serverInfo['ipv6']}">{$serverInfo['ipv6']}</option>{/if}
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="rdnsDomain" class="form-label mr-1 d-inline-block">Domain name</label>
-                                <input class="form-control" type="text" name="rdnsDomain" size="30" id="rdnsDomain"/>
+                                <button onclick="AndrezzzVPS_API('Commit Firewall rules');return false;" class="submit-btn">Commit Firewall</button>
                             </div>
                         </div>
                     </div>
