@@ -523,6 +523,16 @@
     .AndrezzzVPS .showPassword {
         text-decoration: none;
     }
+
+    .AndrezzzVPS .scrtabs-tab-scroll-arrow {
+        top: calc(50% - 10px);
+        color: #396afc;
+        height: 20px;
+        border: none;
+        position: relative;
+        padding-top: 0px;
+        padding-left: 0px;
+    }
 </style>
 
 <script>
@@ -776,6 +786,13 @@
     }
 
     $(document).ready(function () {
+        $('#pills-tab').scrollingTabs({
+            enableSwiping: true,
+            bootstrapVersion: 4,
+            cssClassLeftArrow: 'fa fa-arrow-left',
+            cssClassRightArrow: 'fa fa-arrow-right'
+        });
+
         var cpuOptions = {
             series: {
                 lines: {
