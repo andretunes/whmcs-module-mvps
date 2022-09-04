@@ -538,7 +538,12 @@
                 if (data.result === 'success') {
                     switch (action) {
                         case 'IPv6':
+                            $_('ipv6').parentElement.innerHTML = data.data;
                             data.data = 'IPv6 created: ' + data.data;
+
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 5000);
                             break;
 
                         case 'Graphs':
@@ -996,9 +1001,9 @@
                         <br />
                         <label class="form-label d-inline-block">IPv4:</label>
                         <span class="form-label dashboard-value d-inline-block mr-2">{$serverInfo['ips'][0]}</span>
-                        <br />
+                        {if $serverInfo['ipv6'] !== ''}<br />{/if}
                         <label class="form-label d-inline-block">IPv6:</label>
-                        <span class="form-label dashboard-value d-inline-block mr-2">{if $serverInfo['ipv6'] !== ''}{$serverInfo['ipv6']}{else}<a onclick="AndrezzzMVPS_API('IPv6');">Create</a>{/if}</span>
+                        <span class="form-label dashboard-value d-inline-block mr-2">{if $serverInfo['ipv6'] !== ''}{$serverInfo['ipv6']}{else}<a id="ipv6" onclick="AndrezzzVPS_API('IPv6');return false;">Create</a>{/if}</span>
                     </div>
                 </div>
             </div>
