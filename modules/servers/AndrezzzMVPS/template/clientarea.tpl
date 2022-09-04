@@ -519,6 +519,10 @@
     .AndrezzzVPS .grey-txt {
         color: #666;
     }
+
+    .AndrezzzVPS .showPassword {
+        text-decoration: none;
+    }
 </style>
 
 <script>
@@ -919,6 +923,16 @@
 		$_(button.dataset.group + '-os').classList.add('selected');
 		$_(button.dataset.group + '-version').innerText = button.innerText;
 	}
+
+    function AndrezzzVPS_ShowPassword() {
+        const vpsPassword = $_('vpsPassword');
+
+        if (vpsPassword.type === 'password') {
+            vpsPassword.type = 'text';
+        } else {
+            vpsPassword.type = 'password';
+        }
+    }
 </script>
 
 <div class="AndrezzzVPS" style="display: block;">
@@ -1109,7 +1123,22 @@
 
                                 <div class="badge badge-warning mb-3">The installation password is removed from our systems after 72 hours. It is mandatory for you to change the password on your first login!</div>
                                 
+                                <br/>
+
+                                <center>
+                                <div class="form-group">
                                 <label class="form-label d-inline-block">Password:</label>
+    
+                                    <div class="input-group col-sm-6">
+                                        <input class="form-control" id="vpsPassword" type="password" maxlength="128" disabled value="{if $serverInfo['root'] != ''}{$serverInfo['root']}{else}Expired{/if}">
+
+                                        <div class="input-group-append">
+                                            <a class="input-group-text showPassword" onclick="AndrezzzVPS_ShowPassword();return false;"><i class="fa fa-eye-slash" aria-hidden="true"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                </center>
+
                                 <button onclick="AndrezzzVPS_API('Reset root');return false;" class="submit-btn">Reset Password</button>
                             </div>
                             <div class="tab-pane fade" id="reinstall" role="tabpanel" aria-labelledby="reinstall-tab">
