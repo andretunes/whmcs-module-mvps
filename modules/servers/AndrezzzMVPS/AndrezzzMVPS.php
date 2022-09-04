@@ -45,7 +45,6 @@ function AndrezzzMVPS_API(array $params) {
             $url .= 'order';
             $method .= 'POST';
             
-            $service = Capsule::table('tblhosting')->where('id', $params['serviceid'])->first();
             $billingCycles = array(
                 'Monthly' => 1,
                 'Quarterly' => 3,
@@ -60,7 +59,7 @@ function AndrezzzMVPS_API(array $params) {
                 'notify_url' => Setting::getValue('SystemURL') . '/modules/servers/AndrezzzMVPS/callback.php',
                 'location' => AndrezzzMVPS_GetOption($params, 'locationid'),
                 'os' => AndrezzzMVPS_GetOption($params, 'osid'),
-                'billing_term' => $billingCycles[$service->billingcycle] ?? 1,
+                'billing_term' => $billingCycles[$params['model']['billingcycle']] ?? 1,
             );
             break;
 
@@ -287,18 +286,55 @@ function AndrezzzMVPS_MetaData() {
 }
 
 function AndrezzzMVPS_ConfigOptions() {
-    $os = array();
-    $packages = array();
-    $locations = array();
+    $error = array(
+        'error' => array(
+            'FriendlyName' => 'Error',
+            'Description' => 'Please double check if you selected a Server Group and/or your details are correct.',
+            'Type' => '',
+        ),
+    );
 
-    if (basename($_SERVER['SCRIPT_NAME'], '.php') === 'configproducts' && $_REQUEST['action'] === 'module-settings') {
+    $array = array(
+        'packageid' => array(
+            'FriendlyName' => 'Package',
+            'Description' => 'The Package desired (Configurable option: packageid).',
+            'Type' => 'dropdown',
+            'Options' => array(),
+        ),
+        'locationid' => array(
+            'FriendlyName' => 'Server location',
+            'Description' => 'The Operating System desired (Configurable option: locationid).',
+            'Type' => 'dropdown',
+            'Options' => array(),
+        ),
+        'osid' => array(
+            'FriendlyName' => 'Operating System',
+            'Description' => 'The Operating System desired (Configurable option: osid).',
+            'Type' => 'dropdown',
+            'Options' => array(),
+        ),
+    );
+    
+    try {
+        if (basename($_SERVER['SCRIPT_NAME'], '.php') === 'configproducts' && ($_REQUEST['action'] === 'module-settings' || $_POST['action'] === 'module-settings')) {
+            $id = 0;
+            $serverGroup = 0;
+
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                $id = (int) $_POST['id'];
+                $serverGroup = (int) $_POST['servergroup'];
+            } else {
         $id = (int) $_REQUEST['id'];
 
         $product = Capsule::table('tblproducts')->where('id', $id)->first();
-        $servergroup = Capsule::table('tblservergroupsrel')->where('groupid', $product->servergroup)->first();
-        if (!$servergroup) return;
+                $serverGroup = (int) $product->servergroup;
+            }
+            
+            $serverGroup = Capsule::table('tblservergroupsrel')->where('groupid', $serverGroup)->first();
+            if (!$serverGroup) throw new Exception('No server group specified.');
         
-        $server = Capsule::table('tblservers')->where('id', $servergroup->serverid)->first();
+            $server = Capsule::table('tblservers')->where('id', $serverGroup->serverid)->first();
+            if (!$server) throw new Exception('No server found in the server group.');
     
         $params = array(
             'serverusername' => $server->username,
@@ -308,51 +344,38 @@ function AndrezzzMVPS_ConfigOptions() {
         $params['action'] = 'Operating Systems';
         $operatingSystems = AndrezzzMVPS_API($params);
 
-        $params['action'] = 'Packages';
-        $packageslist = AndrezzzMVPS_API($params);
-
-        $params['action'] = 'Locations';
-        $locationslist = AndrezzzMVPS_API($params);
-    
         foreach ($operatingSystems as $operatingSystem) {
-            $os += array(
+                $array['osid']['Options'] += array(
                 $operatingSystem['id'] => $operatingSystem['name'] . ' (€' . $operatingSystem['price'] . ' EUR)'
             );
         }
     
+            $params['action'] = 'Packages';
+            $packageslist = AndrezzzMVPS_API($params);
+        
         foreach ($packageslist as $package) {
-            $packages += array(
+                $array['packageid']['Options'] += array(
                 $package['id'] => $package['name'] . ' (€' . $package['price'] . ' EUR)'
             );
         }
     
+            $params['action'] = 'Locations';
+            $locationslist = AndrezzzMVPS_API($params);
+        
         foreach ($locationslist as $location) {
-            $locations += array(
+                $array['locationid']['Options'] += array(
                 $location['id'] => $location['name']
             );
         }
+        }
+    } catch(Exception $err) {
+        AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
+
+        $error['error']['Description'] = 'Received the error: ' . $err->getMessage() . ' Check module debug log for more detailed error.';
+        return $error;
     }
     
-    return array(
-        'packageid' => array(
-            'FriendlyName' => 'Package',
-            'Description' => 'The Package desired (Configurable option: packageid).',
-            'Type' => 'dropdown',
-            'Options' => $packages,
-        ),
-        'locationid' => array(
-            'FriendlyName' => 'Server location',
-            'Description' => 'The Operating System desired (Configurable option: locationid).',
-            'Type' => 'dropdown',
-            'Options' => $locations,
-        ),
-        'osid' => array(
-            'FriendlyName' => 'Operating System',
-            'Description' => 'The Operating System desired (Configurable option: osid).',
-            'Type' => 'dropdown',
-            'Options' => $os,
-        ),
-    );
+    return $array;
 }
 
 function AndrezzzMVPS_GetOption(array $params, $id, $default = NULL) {
@@ -525,7 +548,7 @@ function AndrezzzMVPS_VNC(array $params) {
         $params['action'] = 'VNC Console';
         $vnc = AndrezzzMVPS_API($params);
 
-        // echo '<iframe src="' . $vnc['vnc_url'] . '" scrolling="auto" height="100%" width="100%" frameborder="0" style="margin:-8px;"></iframe>';
+        //echo '<iframe src="' . $vnc['vnc_url'] . '" scrolling="auto" height="100%" width="100%" frameborder="0" style="margin:-8px;"></iframe>';
         header('Location: ' . $vnc['vnc_url']);
         WHMCS\Terminus::getInstance()->doExit();
     } catch(Exception $err) {
