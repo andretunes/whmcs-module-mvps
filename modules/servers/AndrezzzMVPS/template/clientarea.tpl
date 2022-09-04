@@ -30,8 +30,8 @@
     .AndrezzzVPS #loading {
         position: fixed;
         color: #65686a;
-        display:none;
-        z-index:1000000;
+        display: none;
+        z-index: 1000000;
     }
 
     .AndrezzzVPS #loading-spinner {
@@ -52,7 +52,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0,0,0,0.3);
+        background-color: rgba(0, 0, 0, 0.3);
     }
 
     .AndrezzzVPS a {
@@ -106,21 +106,24 @@
 
     .AndrezzzVPS i.fa-play.start {
         color: #06d79c;
-        font-size: 30px;
+        font-size: 25px;
     }
 
     .AndrezzzVPS i.fa-stop.stop {
         color: #656373;
-        font-size: 30px;
+        font-size: 25px;
     }
 
     .AndrezzzVPS i.fa-sync.reboot {
         color: #398bf7;
-        font-size: 30px;
+        font-size: 25px;
     }
 
     .AndrezzzVPS .vnc {
         height: 25px;
+    }
+
+    .AndrezzzVPS .dashboard-title {
         color: #3d3d3d;
         font-size: 22px;
     }
@@ -264,7 +267,7 @@
 
     .AndrezzzVPS .submit-btn {
         background-color: #398bf7;
-        border:none;
+        border: none;
         border-radius: 4px;
         color: #ffffff;
         font-weight: 500;
@@ -274,7 +277,7 @@
 
     .AndrezzzVPS .cancel-btn {
         background-color: #5a6268;
-        border:none;
+        border: none;
         border-radius: 4px;
         color: #ffffff;
         font-weight: 500;
@@ -284,12 +287,12 @@
 
     .AndrezzzVPS .submit-btn:hover {
         color: #ffffff !important;
-        box-shadow:0 14px 26px -12px #1769ff6b, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #1769ff33;
+        box-shadow: 0 14px 26px -12px #1769ff6b, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #1769ff33;
     }
 
     .AndrezzzVPS .cancel-btn:hover {
         color: #ffffff !important;
-        box-shadow:0 14px 26px -12px #000000, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #07183533;
+        box-shadow: 0 14px 26px -12px #000000, 0 4px 23px 0 #0000001f, 0 8px 10px -5px #07183533;
     }
 
     .AndrezzzVPS .modal-title {
@@ -328,7 +331,7 @@
 
     .AndrezzzVPS .link-btn {
         background-color: #398bf7;
-        border:none;
+        border: none;
         border-radius: 4px;
         text-decoration: none !important;
         color: #ffffff !important;
@@ -349,13 +352,18 @@
     }
 
     .AndrezzzVPS .distro_img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .AndrezzzVPS .distro_name.media-heading {
         color: #3d3d3d;
         font-size: 22px;
     }
 
     .AndrezzzVPS .version {
         color: #586271;
-        font-size: 16px;
+        font-size: 12px;
     }
 
     .AndrezzzVPS .info-icon {
@@ -368,7 +376,7 @@
 
     .AndrezzzVPS .info-icon:hover,
     .AndrezzzVPS .info-icon:focus {
-        border:none;
+        border: none;
         box-shadow: 0 14px 26px -12px rgba(23, 105, 255, 0.42), 0 4px 23px 0 rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(23, 105, 255, 0.2);
     }
 
@@ -393,8 +401,8 @@
         color: #576170;
         text-decoration: none;
         outline: none;
-        display:block;
-        padding:8px;
+        display: block;
+        padding: 8px;
         background-color: #fff;
     }
 
@@ -408,6 +416,7 @@
         background-color: #2196F3;
     }
 
+    .AndrezzzVPS .os_badge.selected .version,
     .AndrezzzVPS .os_badge.selected .distro_name.media-heading,
     .AndrezzzVPS .os_badge.selected i {
         color: #ffffff;
@@ -492,6 +501,7 @@
         border-spacing: 0;
     }
 
+    #firewallTable th,
     #backupTable th {
         color: #ffffff;
         background-color: #36304a !important;
