@@ -232,6 +232,21 @@ function AndrezzzMVPS_API(array $params) {
             $method .= 'POST';
             break;
 
+        case 'ISO Images':
+            $url .= 'iso';
+            $method .= 'GET';
+            break;
+
+        case 'Load ISO':
+            $url .= 'vps/' . str_replace('VPS-', '', $params['domain']) . '/iso/' . $params['iso_id'];
+            $method .= 'POST';
+            break;
+
+        case 'Eject ISO':
+            $url .= 'vps/' . str_replace('VPS-', '', $params['domain']) . '/eject-iso';
+            $method .= 'POST';
+            break;
+
         default:
             throw new Exception('Invalid action: ' . $params['action']);
             break;
@@ -566,7 +581,7 @@ function AndrezzzMVPS_VNC(array $params) {
 function AndrezzzMVPS_ClientAreaAPI(array $params) {
     try {
         $action = App::getFromRequest('api');
-        $actions = array('Operating Systems', 'Server Info', 'Reinstall', 'Start', 'Reboot', 'Stop', 'VNC Console', 'IPv6', 'Graphs', 'Reverse DNS', 'Create backup', 'Delete backup', 'List backups', 'Restore backup', 'Get Firewall rules', 'Add Firewall rules', 'Delete Firewall rule', 'Commit Firewall rules', 'Reset root');
+        $actions = array('Operating Systems', 'Server Info', 'Reinstall', 'Start', 'Reboot', 'Stop', 'VNC Console', 'IPv6', 'Graphs', 'Reverse DNS', 'Create backup', 'Delete backup', 'List backups', 'Restore backup', 'Get Firewall rules', 'Add Firewall rules', 'Delete Firewall rule', 'Commit Firewall rules', 'Reset root', 'ISO Images', 'Load ISO', 'Eject ISO');
         $results = array('result' => 'success');
 
         if (in_array($action, $actions)) {
@@ -624,31 +639,8 @@ function AndrezzzMVPS_DeliverFile(array $params) {
         return array('jsonResponse' => array('result' => 'error', 'message' => $err->getMessage()));
     }
 }
-function AndrezzzMVPS_AdminCustomButtonArray() {
-    return array(
-        'Start' => 'Start',
-        'Reboot' => 'Reboot',
-        'Stop'=> 'Stop',
-        'VNC Console'=> 'VNC',
-	);
-}
 
-function AndrezzzMVPS_ClientAreaCustomButtonArray() {
-    return array(
-        'Start' => 'Start',
-        'Reboot' => 'Reboot',
-        'Stop'=> 'Stop',
-        'VNC Console'=> 'VNC',
-	);
-}
-
-function AndrezzzMVPS_ClientAreaAllowedFunctions() {
-    return array('ClientAreaAPI', 'DeliverFile');
-}
-
-function AndrezzzMVPS_ClientArea(array $params) {
-    if ($params['moduletype'] !== 'AndrezzzMVPS') return;
-
+function AndrezzzMVPS_Panel(array $params) {
     try {
         $params['action'] = 'Server Info';
         $serverInfo = AndrezzzMVPS_API($params);
@@ -724,15 +716,66 @@ function AndrezzzMVPS_ClientArea(array $params) {
         $serverInfo['package'] = array_search($serverInfo['package'], array_column($packages, 'id'));
         $serverInfo['package'] = $packages[$serverInfo['package']];
         
-        $serverInfo['cpu_usage'] = $serverInfo['cpu_usage'] * 100;
+        global $_LANG;
+        $smarty = new WHMCS\Smarty();
+        $assetHelper = DI::make('asset');
+
+        $smarty->assign('LANG', $_LANG);
+        $smarty->assign('WEB_ROOT', $assetHelper->getWebRoot());
+        $smarty->assign('serviceid', $params['serviceid']);
+
+        $smarty->assign('images', $images);
+        $smarty->assign('locations', $locations);
+        $smarty->assign('serverInfo', $serverInfo);
+        $smarty->assign('operatingSystems', $operatingSystems);
+        
+        $html = $smarty->fetch(__DIR__ . '/template/clientarea.tpl');
+        echo $html;
+        
+        WHMCS\Terminus::getInstance()->doExit();
+    } catch (Exception $err) {
+        AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
 
         return array(
-            'templatefile' => 'template/clientarea',
-            'vars' => array(
-                'images' => $images,
-                'locations' => $locations,
-                'serverInfo' => $serverInfo,
-                'operatingSystems' => $operatingSystems,
+            'templatefile' => 'template/error',
+            'templateVariables' => array(
+                'error' => $err->getMessage(),
+                'image' => 'data:image/png;base64,' . base64_encode(file_get_contents(__DIR__ . '/template/img/notice.png'))
+            ),
+        );
+    }
+}
+
+function AndrezzzMVPS_AdminCustomButtonArray() {
+    return array(
+        'Start' => 'Start',
+        'Reboot' => 'Reboot',
+        'Stop'=> 'Stop',
+        'VNC Console'=> 'VNC',
+	);
+}
+
+function AndrezzzMVPS_ClientAreaCustomButtonArray() {
+    return array(
+        'Start' => 'Start',
+        'Reboot' => 'Reboot',
+        'Stop'=> 'Stop',
+        'VNC Console'=> 'VNC',
+	);
+}
+
+function AndrezzzMVPS_ClientAreaAllowedFunctions() {
+    return array('ClientAreaAPI', 'DeliverFile', 'Panel');
+}
+
+function AndrezzzMVPS_ClientArea(array $params) {
+    if ($params['moduletype'] !== 'AndrezzzMVPS') return;
+
+    try {
+        return array(
+            'templatefile' => 'template/iframe',
+            'templateVariables' => array(
+                'image' => 'data:image/png;base64,' . base64_encode(file_get_contents(__DIR__ . '/template/img/notice.png'))
             ),
         );
     } catch (Exception $err) {
