@@ -1,6 +1,6 @@
 <?php
 /**
- *	MVPS WHMCS Server Provisioning version 1.0
+ *	MVPS WHMCS Server Provisioning version 1.1
  *
  *	@package     WHMCS
  *	@copyright   Andrezzz

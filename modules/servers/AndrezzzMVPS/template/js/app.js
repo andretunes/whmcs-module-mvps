@@ -1,5 +1,5 @@
 /**
- *	WHMCS Server Provisioning version 1.0
+ *	WHMCS Server Provisioning version 1.1
  *
  *	@package     WHMCS
  *	@copyright   Andrezzz
