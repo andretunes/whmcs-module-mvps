@@ -563,8 +563,8 @@ function AndrezzzMVPS_VNC(array $params) {
         $params['action'] = 'VNC Console';
         $vnc = AndrezzzMVPS_API($params);
 
-        //echo '<iframe src="' . $vnc['vnc_url'] . '" scrolling="auto" height="100%" width="100%" frameborder="0" style="margin:-8px;"></iframe>';
-        header('Location: ' . $vnc['vnc_url']);
+        echo '<style>body{margin: 0px;}</style><iframe src="' . $vnc['vnc_url'] . '" scrolling="none" height="100%" width="100%" frameborder="0"></iframe>';
+        // header('Location: ' . $vnc['vnc_url']);
         WHMCS\Terminus::getInstance()->doExit();
     } catch(Exception $err) {
         AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
@@ -581,7 +581,7 @@ function AndrezzzMVPS_VNC(array $params) {
 function AndrezzzMVPS_ClientAreaAPI(array $params) {
     try {
         $action = App::getFromRequest('api');
-        $actions = array('Operating Systems', 'Server Info', 'Reinstall', 'Start', 'Reboot', 'Stop', 'VNC Console', 'IPv6', 'Graphs', 'Reverse DNS', 'Create backup', 'Delete backup', 'List backups', 'Restore backup', 'Get Firewall rules', 'Add Firewall rules', 'Delete Firewall rule', 'Commit Firewall rules', 'Reset root', 'ISO Images', 'Load ISO', 'Eject ISO');
+        $actions = array('Operating Systems', 'Server Info', 'Reinstall', 'Start', 'Reboot', 'Stop', 'IPv6', 'Graphs', 'Reverse DNS', 'Create backup', 'Delete backup', 'List backups', 'Restore backup', 'Get Firewall rules', 'Add Firewall rules', 'Delete Firewall rule', 'Commit Firewall rules', 'Reset root', 'ISO Images', 'Load ISO', 'Eject ISO');
         $results = array('result' => 'success');
 
         if (in_array($action, $actions)) {
