@@ -6,10 +6,8 @@ Start selling MVPS services with this module!
 
 # Screenshots
 ![Overview](Screenshots/Overview.gif)
-![Firewall](Screenshots/Firewall.gif)
 ![Backups](Screenshots/Backups.png)
-![Backups](Screenshots/Backups%20(1).png)
-![rDNS](Screenshots/rDNS.png)
+![VNC](Screenshots/VNC.png)
 
 # Documentation
 Please check here: [https://docs.andrezzz.pt/whmcs/servers/mvps](https://docs.andrezzz.pt/whmcs/servers/mvps)
