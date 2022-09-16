@@ -736,13 +736,15 @@ function AndrezzzMVPS_Panel(array $params) {
     } catch (Exception $err) {
         AndrezzzMVPS_Error(__FUNCTION__, $params, $err);
 
-        return array(
-            'templatefile' => 'template/error',
-            'templateVariables' => array(
-                'error' => $err->getMessage(),
-                'image' => 'data:image/png;base64,' . base64_encode(file_get_contents(__DIR__ . '/template/img/notice.png'))
-            ),
-        );
+        $smarty = new WHMCS\Smarty();
+        
+        $smarty->assign('error', $err->getMessage());
+        $smarty->assign('image', 'data:image/png;base64,' . base64_encode(file_get_contents(__DIR__ . '/template/img/notice.png')));
+        
+        $html = $smarty->fetch(__DIR__ . '/template/error.tpl');
+        echo $html;
+        
+        WHMCS\Terminus::getInstance()->doExit();
     }
 }
 
