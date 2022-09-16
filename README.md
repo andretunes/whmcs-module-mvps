@@ -11,11 +11,8 @@ Start selling MVPS services with this module!
 ![Backups](Screenshots/Backups%20(1).png)
 ![rDNS](Screenshots/rDNS.png)
 
-# Install
-1. Upload the `modules` folder to your WHMCS Installation;
-2. Go to `System Settings -> Servers` and add a new Server, on the Module field choose `Andrezzz - MVPS` and fill with all the data;
-3. Click on `Test connection` button. If you get any error, please recheck the data entered, if not you can save the Server;
-4. Go to `System Settings -> Products/Services` and create a new Product, on the Module field choose `Andrezzz - MVPS` and save the Product.
+# Documentation
+Please check here: [https://docs.andrezzz.pt/whmcs/servers/mvps](https://docs.andrezzz.pt/whmcs/servers/mvps)
 
 # Contact information
 [Website](https://www.andrezzz.pt)<br>
